@@ -1,7 +1,7 @@
 # vim: set shiftwidth=2 tabstop=2 softtabstop=2 expandtab:
 
 test = require 'tape'
-{Recipe, AmorphousRecipe, PositionalRecipe} = require './'
+{Recipe, AmorphousRecipe, PositionalRecipe, CraftingThesaurus} = require './'
 Inventory = require 'inventory'
 ItemPile = require 'itempile'
 
@@ -29,5 +29,18 @@ test 'double ingredients', (t) ->
   t.equals(r.matches(craftingGrid ['plank', 'plank', 'plank']), true)
   t.equals(r.matches(craftingGrid [undefined,'plank', 'plank']), true)
   t.equals(r.matches(craftingGrid [undefined, undefined,'plank', 'plank']), true)
+  t.end()
+
+test 'thesaurus', (t) ->
+  r = new AmorphousRecipe ['log'], 'plank'
+
+  CraftingThesaurus.registerName 'log', new ItemPile('logOak')
+  CraftingThesaurus.registerName 'log', new ItemPile('logBirch')
+
+  t.equals(r.matches(craftingGrid ['log']), true)
+  t.equals(r.matches(craftingGrid ['logOak']), true)
+  t.equals(r.matches(craftingGrid ['logBirch']), true)
+  t.equals(r.matches(craftingGrid ['logWhatever']), false)
+
   t.end()
 

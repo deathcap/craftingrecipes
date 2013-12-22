@@ -1,5 +1,17 @@
 # vim: set shiftwidth=2 tabstop=2 softtabstop=2 expandtab:
 
+class CraftingThesaurus 
+  @map = {}
+
+  @registerName: (lookupName, itemPile) ->
+    CraftingThesaurus.map[lookupName] = [] if not CraftingThesaurus.map[lookupName]?
+    CraftingThesaurus.map[lookupName].push(itemPile.item)
+
+  @matchesName: (lookupName, itemPile) ->
+    return false if not itemPile?
+    return true if itemPile.item == lookupName
+    return CraftingThesaurus.map[lookupName]?.indexOf(itemPile.item) != -1
+
 class Recipe
   matches: (inventory) -> false
   craft: (inventory) -> undefined
@@ -12,7 +24,7 @@ class Recipe
       continue if not itemPile?
 
       console.log 'testing itemPile',itemPile,i,' against ',ingredient
-      if itemPile?.item == ingredient  # TODO: thesaurus
+      if CraftingThesaurus.matchesName(ingredient, itemPile)
         console.log '  found ',itemPile,i
         return i
 
@@ -36,11 +48,10 @@ class AmorphousRecipe extends Recipe
     console.log 'foundIndices',foundIndices
     return foundIndices
    
-
   matches: (inventory) ->
     return @findMatchingSlots(inventory) != false
 
 class PositionalRecipe extends Recipe
 
 
-module.exports = {Recipe, AmorphousRecipe, PositionalRecipe}
+module.exports = {Recipe, AmorphousRecipe, PositionalRecipe, CraftingThesaurus}
