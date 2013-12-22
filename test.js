@@ -56,7 +56,7 @@
 
   test('craft thesaurus', function(t) {
     var r;
-    r = new AmorphousRecipe(['log'], 'plank');
+    r = new AmorphousRecipe(['log'], new ItemPile('plank'));
     CraftingThesaurus.registerName('log', new ItemPile('logOak'));
     CraftingThesaurus.registerName('log', new ItemPile('logBirch'));
     t.equals(r.matches(craftingGrid(['log'])), true);

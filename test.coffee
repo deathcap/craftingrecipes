@@ -47,7 +47,7 @@ test 'double ingredients', (t) ->
   t.end()
 
 test 'craft thesaurus', (t) ->
-  r = new AmorphousRecipe ['log'], 'plank'
+  r = new AmorphousRecipe ['log'], new ItemPile('plank')
 
   CraftingThesaurus.registerName 'log', new ItemPile('logOak')
   CraftingThesaurus.registerName 'log', new ItemPile('logBirch')

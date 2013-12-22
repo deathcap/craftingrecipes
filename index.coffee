@@ -13,7 +13,8 @@ class CraftingThesaurus
     return CraftingThesaurus.map[lookupName]?.indexOf(itemPile.item) != -1
 
 class Recipe
-  matches: (inventory) -> false
+  computeOutput: (inventory) -> undefined
+  matches: (inventory) -> @computeOutput(inventory) != undefined
   craft: (inventory) -> undefined
 
   findIngredient: (inventory, ingredient, excludedSlots) ->
@@ -48,8 +49,8 @@ class AmorphousRecipe extends Recipe
     console.log 'foundIndices',foundIndices
     return foundIndices
    
-  matches: (inventory) ->
-    return @findMatchingSlots(inventory) != false
+  computeOutput: (inventory) ->
+    return @output.clone() if @findMatchingSlots(inventory) != false
 
   craft: (inventory) ->
     slots = @findMatchingSlots(inventory)
@@ -62,6 +63,33 @@ class AmorphousRecipe extends Recipe
 
 
 class PositionalRecipe extends Recipe
+  constructor: (@pattern, @ingredients, @output) ->
+    @recipeWidth = @computeWidth()
 
+  computeWidth: () ->
+    maxWidth = 0
+    for line in @pattern
+      maxWidth = Math.max(maxWidth, line.length)
+    return maxWidth
 
-module.exports = {Recipe, AmorphousRecipe, PositionalRecipe, CraftingThesaurus}
+  findMatchingSlots: (inventory, inventoryWidth) ->
+    # TODO
+
+class RecipeLocator
+  @recipes = []
+
+  @register: (recipe) ->
+    RecipeLocator.recipes.push(recipe)
+
+  @find: (inventory) ->
+    for recipe in RecipeLocator.recipes
+      return recipe if recipe.computeOutput(inventory) != undefined
+    return undefined
+
+  @craft: (inventory) ->
+    for recipe in RecipeLocator.recipes
+      output = recipe.craft(inventory)
+      return output if output
+    return undefined
+
+module.exports = {Recipe, AmorphousRecipe, PositionalRecipe, CraftingThesaurus, RecipeLocator}
