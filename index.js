@@ -27,29 +27,38 @@
       this.output = output;
     }
 
-    AmorphousRecipe.prototype.matches = function(inventory) {
-      var found, ingredient, itemPile, _i, _j, _len, _len1, _ref, _ref1;
+    AmorphousRecipe.prototype.findMatchingSlots = function(inventory) {
+      var foundIndex, foundIndices, i, ingredient, itemPile, _i, _j, _len, _ref, _ref1;
+      foundIndices = [];
       _ref = this.ingredients;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         ingredient = _ref[_i];
         console.log('check ingredient', ingredient);
-        found = false;
-        _ref1 = inventory.array;
-        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-          itemPile = _ref1[_j];
+        foundIndex = void 0;
+        for (i = _j = 0, _ref1 = inventory.size(); 0 <= _ref1 ? _j < _ref1 : _j > _ref1; i = 0 <= _ref1 ? ++_j : --_j) {
+          itemPile = inventory.get(i);
+          if (itemPile == null) {
+            continue;
+          }
           console.log('testing itemPile', itemPile);
           if ((itemPile != null ? itemPile.item : void 0) === ingredient) {
-            console.log('  found ', itemPile);
-            found = true;
+            console.log('  found ', itemPile, i);
+            foundIndex = i;
             break;
           }
         }
-        console.log('found=', found);
-        if (!found) {
+        console.log('found=', foundIndex);
+        if (foundIndex == null) {
           return false;
         }
+        foundIndices.push(foundIndex);
       }
-      return true;
+      console.log('foundIndices', foundIndices);
+      return foundIndices;
+    };
+
+    AmorphousRecipe.prototype.matches = function(inventory) {
+      return !!this.findMatchingSlots(inventory);
     };
 
     return AmorphousRecipe;

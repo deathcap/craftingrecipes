@@ -10,7 +10,7 @@ test 'recipe', (t) ->
   console.log(r)
 
   input = new Inventory(4)
-  input.set 0, new ItemPile('log')
+  input.set 1, new ItemPile('log')
   console.log 'input='+input
 
   console.log r.matches(input)
