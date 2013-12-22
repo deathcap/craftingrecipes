@@ -58,7 +58,7 @@ class AmorphousRecipe extends Recipe
     for slot in slots
       inventory.takeAt slot, 1 # TODO: check return
 
-    return @output
+    return @output.clone()
 
 class PositionalRecipe extends Recipe
 

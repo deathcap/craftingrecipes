@@ -105,7 +105,7 @@
         slot = slots[_i];
         inventory.takeAt(slot, 1);
       }
-      return this.output;
+      return this.output.clone();
     };
 
     return AmorphousRecipe;
