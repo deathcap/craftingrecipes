@@ -17,14 +17,18 @@
     };
 
     CraftingThesaurus.matchesName = function(lookupName, itemPile) {
-      var _ref;
+      var a;
       if (itemPile == null) {
         return false;
       }
       if (itemPile.item === lookupName) {
         return true;
       }
-      return ((_ref = CraftingThesaurus.map[lookupName]) != null ? _ref.indexOf(itemPile.item) : void 0) !== -1;
+      a = CraftingThesaurus.map[lookupName];
+      if (a == null) {
+        return false;
+      }
+      return a.indexOf(itemPile.item) !== -1;
     };
 
     return CraftingThesaurus;
@@ -56,9 +60,8 @@
         if (itemPile == null) {
           continue;
         }
-        console.log('testing itemPile', itemPile, i, ' against ', ingredient);
         if (CraftingThesaurus.matchesName(ingredient, itemPile)) {
-          console.log('  found ', itemPile, i);
+          console.log('findIngredient match:', ingredient, itemPile + '');
           return i;
         }
       }
@@ -83,9 +86,8 @@
       _ref = this.ingredients;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         ingredient = _ref[_i];
-        console.log('check ingredient', ingredient);
         foundIndex = this.findIngredient(inventory, ingredient, foundIndices);
-        console.log('found=', foundIndex);
+        console.log('check ingredient=', ingredient, 'foundIndex=', foundIndex);
         if (foundIndex == null) {
           return false;
         }
@@ -99,6 +101,7 @@
       if (this.findMatchingSlots(inventory) !== false) {
         return this.output.clone();
       }
+      return void 0;
     };
 
     AmorphousRecipe.prototype.craft = function(inventory) {

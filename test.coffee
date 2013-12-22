@@ -6,6 +6,8 @@ Inventory = require 'inventory'
 ItemPile = require 'itempile'
 
 test 'thesaurus register', (t) ->
+  t.equals(CraftingThesaurus.matchesName('logOak', new ItemPile('plankOak')), false)
+
   CraftingThesaurus.registerName 'blackDye', new ItemPile('squidInk')
   CraftingThesaurus.registerName 'blackDye', new ItemPile('syntheticBlackInk')
   CraftingThesaurus.registerName 'whiteDye', new ItemPile('bonemeal')

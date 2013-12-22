@@ -10,7 +10,10 @@ class CraftingThesaurus
   @matchesName: (lookupName, itemPile) ->
     return false if not itemPile?
     return true if itemPile.item == lookupName
-    return CraftingThesaurus.map[lookupName]?.indexOf(itemPile.item) != -1
+    
+    a = CraftingThesaurus.map[lookupName]
+    return false if not a?
+    return a.indexOf(itemPile.item) != -1
 
 class Recipe
   computeOutput: (inventory) -> undefined
@@ -24,9 +27,8 @@ class Recipe
       itemPile = inventory.get(i)
       continue if not itemPile?
 
-      console.log 'testing itemPile',itemPile,i,' against ',ingredient
       if CraftingThesaurus.matchesName(ingredient, itemPile)
-        console.log '  found ',itemPile,i
+        console.log 'findIngredient match:',ingredient,itemPile+''
         return i
 
     return undefined
@@ -37,12 +39,11 @@ class AmorphousRecipe extends Recipe
   findMatchingSlots: (inventory) ->
     foundIndices = []
     for ingredient in @ingredients
-      console.log 'check ingredient',ingredient
 
       # search in inventory
       # cannot reuse found item slots for multiple ingredients
       foundIndex = @findIngredient(inventory, ingredient, foundIndices)
-      console.log 'found=',foundIndex
+      console.log 'check ingredient=',ingredient,'foundIndex=',foundIndex
       return false if not foundIndex?
       foundIndices.push(foundIndex)
 
@@ -51,6 +52,7 @@ class AmorphousRecipe extends Recipe
    
   computeOutput: (inventory) ->
     return @output.clone() if @findMatchingSlots(inventory) != false
+    undefined
 
   craft: (inventory) ->
     slots = @findMatchingSlots(inventory)
