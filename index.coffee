@@ -51,6 +51,15 @@ class AmorphousRecipe extends Recipe
   matches: (inventory) ->
     return @findMatchingSlots(inventory) != false
 
+  craft: (inventory) ->
+    slots = @findMatchingSlots(inventory)
+    return undefined if !slots
+
+    for slot in slots
+      inventory.takeAt slot, 1 # TODO: check return
+
+    return @output
+
 class PositionalRecipe extends Recipe
 
 

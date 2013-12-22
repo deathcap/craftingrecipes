@@ -95,6 +95,19 @@
       return this.findMatchingSlots(inventory) !== false;
     };
 
+    AmorphousRecipe.prototype.craft = function(inventory) {
+      var slot, slots, _i, _len;
+      slots = this.findMatchingSlots(inventory);
+      if (!slots) {
+        return void 0;
+      }
+      for (_i = 0, _len = slots.length; _i < _len; _i++) {
+        slot = slots[_i];
+        inventory.takeAt(slot, 1);
+      }
+      return this.output;
+    };
+
     return AmorphousRecipe;
 
   })(Recipe);

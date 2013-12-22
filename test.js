@@ -21,7 +21,7 @@
 
   test('simple recipe match', function(t) {
     var r;
-    r = new AmorphousRecipe(['log'], 'plank');
+    r = new AmorphousRecipe(['log'], new ItemPile('plank'));
     t.equals(r.matches(craftingGrid(['log'])), true);
     t.equals(r.matches(craftingGrid([void 0, 'log'])), true);
     t.equals(r.matches(craftingGrid([void 0, void 0, 'log'])), true);
@@ -31,7 +31,7 @@
 
   test('double ingredients', function(t) {
     var r;
-    r = new AmorphousRecipe(['plank', 'plank'], 'stick');
+    r = new AmorphousRecipe(['plank', 'plank'], new ItemPile('stick'));
     t.equals(r.matches(craftingGrid(['plank'])), false);
     t.equals(r.matches(craftingGrid(['plank', 'plank'])), true);
     t.equals(r.matches(craftingGrid(['plank', 'plank', 'plank'])), true);
@@ -49,6 +49,40 @@
     t.equals(r.matches(craftingGrid(['logOak'])), true);
     t.equals(r.matches(craftingGrid(['logBirch'])), true);
     t.equals(r.matches(craftingGrid(['logWhatever'])), false);
+    return t.end();
+  });
+
+  test('take craft empty', function(t) {
+    var grid, output, r;
+    r = new AmorphousRecipe(['log'], new ItemPile('plank'));
+    grid = craftingGrid(['log']);
+    output = r.craft(grid);
+    t.equals(!!output, true);
+    console.log('output', output);
+    t.equals(output.item, 'plank');
+    t.equals(grid.get(0), void 0);
+    t.equals(grid.get(1), void 0);
+    t.equals(grid.get(2), void 0);
+    t.equals(grid.get(3), void 0);
+    return t.end();
+  });
+
+  test('take craft leftover', function(t) {
+    var grid, output, r;
+    r = new AmorphousRecipe(['log'], new ItemPile('plank'));
+    grid = new Inventory(4);
+    grid.set(0, new ItemPile('log', 10));
+    output = r.craft(grid);
+    t.equals(!!output, true);
+    console.log('output', output);
+    t.equals(output.item, 'plank');
+    console.log('new grid', grid);
+    t.equals(grid.get(0) !== void 0, true);
+    t.equals(grid.get(0).count, 9);
+    t.equals(grid.get(0).item, 'log');
+    t.equals(grid.get(1), void 0);
+    t.equals(grid.get(2), void 0);
+    t.equals(grid.get(3), void 0);
     return t.end();
   });
 
