@@ -15,8 +15,11 @@ class AmorphousRecipe extends Recipe
       # search in inventory
       foundIndex = undefined
       for i in [0...inventory.size()]
+        continue if foundIndices.indexOf(i) != -1   # cannot reuse found item slots for multiple ingredients
+
         itemPile = inventory.get(i)
         continue if not itemPile?
+
         console.log 'testing itemPile',itemPile,i,' against ',ingredient
         # TODO: don't reuse found slots
         if itemPile?.item == ingredient  # TODO: thesaurus
@@ -32,7 +35,7 @@ class AmorphousRecipe extends Recipe
    
 
   matches: (inventory) ->
-    return !! @findMatchingSlots(inventory)
+    return @findMatchingSlots(inventory) != false
 
 class PositionalRecipe extends Recipe
 

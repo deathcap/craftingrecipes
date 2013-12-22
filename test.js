@@ -30,10 +30,10 @@
   });
 
   test('double ingredients', function(t) {
-    var input, r;
+    var r;
     r = new AmorphousRecipe(['plank', 'plank'], 'stick');
-    console.log(r);
-    input = new Inventory(4);
+    t.equals(r.matches(craftingGrid(['plank'])), false);
+    t.equals(r.matches(craftingGrid(['plank', 'plank'])), true);
     return t.end();
   });
 

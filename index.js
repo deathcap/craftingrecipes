@@ -36,6 +36,9 @@
         console.log('check ingredient', ingredient);
         foundIndex = void 0;
         for (i = _j = 0, _ref1 = inventory.size(); 0 <= _ref1 ? _j < _ref1 : _j > _ref1; i = 0 <= _ref1 ? ++_j : --_j) {
+          if (foundIndices.indexOf(i) !== -1) {
+            continue;
+          }
           itemPile = inventory.get(i);
           if (itemPile == null) {
             continue;
@@ -58,7 +61,7 @@
     };
 
     AmorphousRecipe.prototype.matches = function(inventory) {
-      return !!this.findMatchingSlots(inventory);
+      return this.findMatchingSlots(inventory) !== false;
     };
 
     return AmorphousRecipe;
