@@ -1,0 +1,6 @@
+# craftingrecipes
+
+## License
+
+MIT
+

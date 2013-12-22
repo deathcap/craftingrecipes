@@ -1,0 +1,23 @@
+{
+  "name": "craftingrecipes",
+  "description": "",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:deathcap/craftingrecipes.git"
+  },
+  "dependencies": {
+    "itempile": "git://github.com/deathcap/itempile.git",
+    "inventory": "git://github.com/deathcap/inventory.git"
+  },
+  "devDependencies": {
+    "coffee-script": "1.6.3",
+    "coffeeify": "0.5.2",
+    "browserify": "2.35.1",
+    "beefy": "0.4.5"
+  },
+  "scripts": {
+    "test": "node test.js",
+    "start": "beefy test.coffee:bundle.js 8080 -- -t coffeeify"
+  }
+}
