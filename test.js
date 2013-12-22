@@ -10,6 +10,20 @@
 
   ItemPile = require('itempile');
 
+  test('thesaurus register', function(t) {
+    CraftingThesaurus.registerName('blackDye', new ItemPile('squidInk'));
+    CraftingThesaurus.registerName('blackDye', new ItemPile('syntheticBlackInk'));
+    CraftingThesaurus.registerName('whiteDye', new ItemPile('bonemeal'));
+    CraftingThesaurus.registerName('whiteDye', new ItemPile('bleach'));
+    t.equals(CraftingThesaurus.matchesName('blackDye', new ItemPile('squidInk')), true);
+    t.equals(CraftingThesaurus.matchesName('blackDye', new ItemPile('syntheticBlackInk')), true);
+    t.equals(CraftingThesaurus.matchesName('blackDye', new ItemPile('something')), false);
+    t.equals(CraftingThesaurus.matchesName('whiteDye', new ItemPile('bonemeal')), true);
+    t.equals(CraftingThesaurus.matchesName('whiteDye', new ItemPile('bleach')), true);
+    t.equals(CraftingThesaurus.matchesName('whiteDye', new ItemPile('dirt')), false);
+    return t.end();
+  });
+
   craftingGrid = function(names) {
     var i, input, _i, _ref1;
     input = new Inventory(4);
@@ -40,7 +54,7 @@
     return t.end();
   });
 
-  test('thesaurus', function(t) {
+  test('craft thesaurus', function(t) {
     var r;
     r = new AmorphousRecipe(['log'], 'plank');
     CraftingThesaurus.registerName('log', new ItemPile('logOak'));

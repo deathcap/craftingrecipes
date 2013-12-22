@@ -5,6 +5,21 @@ test = require 'tape'
 Inventory = require 'inventory'
 ItemPile = require 'itempile'
 
+test 'thesaurus register', (t) ->
+  CraftingThesaurus.registerName 'blackDye', new ItemPile('squidInk')
+  CraftingThesaurus.registerName 'blackDye', new ItemPile('syntheticBlackInk')
+  CraftingThesaurus.registerName 'whiteDye', new ItemPile('bonemeal')
+  CraftingThesaurus.registerName 'whiteDye', new ItemPile('bleach')
+
+  t.equals(CraftingThesaurus.matchesName('blackDye', new ItemPile('squidInk')), true)
+  t.equals(CraftingThesaurus.matchesName('blackDye', new ItemPile('syntheticBlackInk')), true)
+  t.equals(CraftingThesaurus.matchesName('blackDye', new ItemPile('something')), false)
+  t.equals(CraftingThesaurus.matchesName('whiteDye', new ItemPile('bonemeal')), true)
+  t.equals(CraftingThesaurus.matchesName('whiteDye', new ItemPile('bleach')), true)
+  t.equals(CraftingThesaurus.matchesName('whiteDye', new ItemPile('dirt')), false)
+
+  t.end()
+
 # convenience function to create inventory with items of given names, one each
 craftingGrid = (names) ->
   input = new Inventory(4)
@@ -31,7 +46,7 @@ test 'double ingredients', (t) ->
   t.equals(r.matches(craftingGrid [undefined, undefined,'plank', 'plank']), true)
   t.end()
 
-test 'thesaurus', (t) ->
+test 'craft thesaurus', (t) ->
   r = new AmorphousRecipe ['log'], 'plank'
 
   CraftingThesaurus.registerName 'log', new ItemPile('logOak')

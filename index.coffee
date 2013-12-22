@@ -60,6 +60,7 @@ class AmorphousRecipe extends Recipe
 
     return @output.clone()
 
+
 class PositionalRecipe extends Recipe
 
 
