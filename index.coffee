@@ -4,6 +4,20 @@ class Recipe
   matches: (inventory) -> false
   craft: (inventory) -> undefined
 
+  findIngredient: (inventory, ingredient, excludedSlots) ->
+    for i in [0...inventory.size()]
+      continue if excludedSlots.indexOf(i) != -1
+
+      itemPile = inventory.get(i)
+      continue if not itemPile?
+
+      console.log 'testing itemPile',itemPile,i,' against ',ingredient
+      if itemPile?.item == ingredient  # TODO: thesaurus
+        console.log '  found ',itemPile,i
+        return i
+
+    return undefined
+
 class AmorphousRecipe extends Recipe
   constructor: (@ingredients, @output) ->
 
@@ -13,19 +27,8 @@ class AmorphousRecipe extends Recipe
       console.log 'check ingredient',ingredient
 
       # search in inventory
-      foundIndex = undefined
-      for i in [0...inventory.size()]
-        continue if foundIndices.indexOf(i) != -1   # cannot reuse found item slots for multiple ingredients
-
-        itemPile = inventory.get(i)
-        continue if not itemPile?
-
-        console.log 'testing itemPile',itemPile,i,' against ',ingredient
-        # TODO: don't reuse found slots
-        if itemPile?.item == ingredient  # TODO: thesaurus
-          console.log '  found ',itemPile,i
-          foundIndex = i
-          break
+      # cannot reuse found item slots for multiple ingredients
+      foundIndex = @findIngredient(inventory, ingredient, foundIndices)
       console.log 'found=',foundIndex
       return false if not foundIndex?
       foundIndices.push(foundIndex)

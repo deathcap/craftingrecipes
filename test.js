@@ -34,6 +34,9 @@
     r = new AmorphousRecipe(['plank', 'plank'], 'stick');
     t.equals(r.matches(craftingGrid(['plank'])), false);
     t.equals(r.matches(craftingGrid(['plank', 'plank'])), true);
+    t.equals(r.matches(craftingGrid(['plank', 'plank', 'plank'])), true);
+    t.equals(r.matches(craftingGrid([void 0, 'plank', 'plank'])), true);
+    t.equals(r.matches(craftingGrid([void 0, void 0, 'plank', 'plank'])), true);
     return t.end();
   });
 

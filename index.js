@@ -15,6 +15,25 @@
       return void 0;
     };
 
+    Recipe.prototype.findIngredient = function(inventory, ingredient, excludedSlots) {
+      var i, itemPile, _i, _ref;
+      for (i = _i = 0, _ref = inventory.size(); 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+        if (excludedSlots.indexOf(i) !== -1) {
+          continue;
+        }
+        itemPile = inventory.get(i);
+        if (itemPile == null) {
+          continue;
+        }
+        console.log('testing itemPile', itemPile, i, ' against ', ingredient);
+        if ((itemPile != null ? itemPile.item : void 0) === ingredient) {
+          console.log('  found ', itemPile, i);
+          return i;
+        }
+      }
+      return void 0;
+    };
+
     return Recipe;
 
   })();
@@ -28,28 +47,13 @@
     }
 
     AmorphousRecipe.prototype.findMatchingSlots = function(inventory) {
-      var foundIndex, foundIndices, i, ingredient, itemPile, _i, _j, _len, _ref, _ref1;
+      var foundIndex, foundIndices, ingredient, _i, _len, _ref;
       foundIndices = [];
       _ref = this.ingredients;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         ingredient = _ref[_i];
         console.log('check ingredient', ingredient);
-        foundIndex = void 0;
-        for (i = _j = 0, _ref1 = inventory.size(); 0 <= _ref1 ? _j < _ref1 : _j > _ref1; i = 0 <= _ref1 ? ++_j : --_j) {
-          if (foundIndices.indexOf(i) !== -1) {
-            continue;
-          }
-          itemPile = inventory.get(i);
-          if (itemPile == null) {
-            continue;
-          }
-          console.log('testing itemPile', itemPile, i, ' against ', ingredient);
-          if ((itemPile != null ? itemPile.item : void 0) === ingredient) {
-            console.log('  found ', itemPile, i);
-            foundIndex = i;
-            break;
-          }
-        }
+        foundIndex = this.findIngredient(inventory, ingredient, foundIndices);
         console.log('found=', foundIndex);
         if (foundIndex == null) {
           return false;

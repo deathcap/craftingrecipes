@@ -26,5 +26,8 @@ test 'double ingredients', (t) ->
 
   t.equals(r.matches(craftingGrid ['plank']), false)
   t.equals(r.matches(craftingGrid ['plank', 'plank']), true)
+  t.equals(r.matches(craftingGrid ['plank', 'plank', 'plank']), true)
+  t.equals(r.matches(craftingGrid [undefined,'plank', 'plank']), true)
+  t.equals(r.matches(craftingGrid [undefined, undefined,'plank', 'plank']), true)
   t.end()
 
