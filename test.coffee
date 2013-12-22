@@ -5,15 +5,26 @@ test = require 'tape'
 Inventory = require 'inventory'
 ItemPile = require 'itempile'
 
-test 'recipe', (t) ->
+# convenience function to create inventory with items of given names, one each
+craftingGrid = (names) ->
+  input = new Inventory(4)
+  for i in [0...names.length]
+    input.set i, new ItemPile(names[i], 1)
+  return input
+
+test 'simple recipe match', (t) ->
   r = new AmorphousRecipe ['log'], 'plank'
+
+  t.equals(r.matches(craftingGrid ['log']), true)
+  t.equals(r.matches(craftingGrid [undefined, 'log']), true)
+  t.equals(r.matches(craftingGrid [undefined, undefined, 'log']), true)
+  t.equals(r.matches(craftingGrid [undefined, undefined, undefined, 'log']), true)
+  t.end()
+
+test 'double ingredients', (t) ->
+  r = new AmorphousRecipe ['plank', 'plank'], 'stick'
   console.log(r)
 
   input = new Inventory(4)
-  input.set 1, new ItemPile('log')
-  console.log 'input='+input
-
-  console.log r.matches(input)
-
   t.end()
 

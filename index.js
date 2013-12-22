@@ -40,7 +40,7 @@
           if (itemPile == null) {
             continue;
           }
-          console.log('testing itemPile', itemPile);
+          console.log('testing itemPile', itemPile, i, ' against ', ingredient);
           if ((itemPile != null ? itemPile.item : void 0) === ingredient) {
             console.log('  found ', itemPile, i);
             foundIndex = i;

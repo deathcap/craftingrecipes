@@ -17,7 +17,7 @@ class AmorphousRecipe extends Recipe
       for i in [0...inventory.size()]
         itemPile = inventory.get(i)
         continue if not itemPile?
-        console.log 'testing itemPile',itemPile
+        console.log 'testing itemPile',itemPile,i,' against ',ingredient
         # TODO: don't reuse found slots
         if itemPile?.item == ingredient  # TODO: thesaurus
           console.log '  found ',itemPile,i
