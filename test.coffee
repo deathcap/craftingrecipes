@@ -22,36 +22,45 @@ test 'thesaurus register', (t) ->
 
   t.end()
 
-# convenience function to create inventory with items of given names, one each
-craftingGrid = (names) ->
+# convenience functions to create inventory with items of given names, one each
+fillGrid = (input, names) ->
+  for name, i in names
+    input.set i, new ItemPile(name, 1) if name?
+  return input
+
+craftingGrid2 = (names) ->
   input = new Inventory(2, 2)
-  for i in [0...names.length]
-    input.set i, new ItemPile(names[i], 1) if names[i]?
+  fillGrid input, names
+  return input
+
+craftingGrid3 = (names) ->
+  input = new Inventory(3, 3)
+  fillGrid input, names
   return input
 
 test 'amorphous simple recipe match', (t) ->
   r = new AmorphousRecipe ['log'], new ItemPile('plank')
 
-  t.equals(r.matches(craftingGrid ['log']), true)
-  t.equals(r.matches(craftingGrid [undefined, 'log']), true)
-  t.equals(r.matches(craftingGrid [undefined, undefined, 'log']), true)
-  t.equals(r.matches(craftingGrid [undefined, undefined, undefined, 'log']), true)
+  t.equals(r.matches(craftingGrid2 ['log']), true)
+  t.equals(r.matches(craftingGrid2 [undefined, 'log']), true)
+  t.equals(r.matches(craftingGrid2 [undefined, undefined, 'log']), true)
+  t.equals(r.matches(craftingGrid2 [undefined, undefined, undefined, 'log']), true)
   t.end()
 
 test 'amorphous double ingredients', (t) ->
   r = new AmorphousRecipe ['plank', 'plank'], new ItemPile('stick')
 
-  t.equals(r.matches(craftingGrid ['plank']), false)
-  t.equals(r.matches(craftingGrid ['plank', 'plank']), true)
-  t.equals(r.matches(craftingGrid [undefined,'plank', 'plank']), true)
-  t.equals(r.matches(craftingGrid [undefined, undefined,'plank', 'plank']), true)
+  t.equals(r.matches(craftingGrid2 ['plank']), false)
+  t.equals(r.matches(craftingGrid2 ['plank', 'plank']), true)
+  t.equals(r.matches(craftingGrid2 [undefined,'plank', 'plank']), true)
+  t.equals(r.matches(craftingGrid2 [undefined, undefined,'plank', 'plank']), true)
   t.end()
 
 test 'amorphous extraneous inputs', (t) ->
   r = new AmorphousRecipe ['plank', 'plank'], new ItemPile('stick')
 
-  t.equals(r.matches(craftingGrid ['plank', 'plank', 'plank']), false)
-  t.equals(r.matches(craftingGrid ['plank', 'plank', 'plank', 'plank']), false)
+  t.equals(r.matches(craftingGrid2 ['plank', 'plank', 'plank']), false)
+  t.equals(r.matches(craftingGrid2 ['plank', 'plank', 'plank', 'plank']), false)
   t.end()
 
 test 'craft thesaurus', (t) ->
@@ -60,17 +69,17 @@ test 'craft thesaurus', (t) ->
   CraftingThesaurus.registerName 'log', new ItemPile('logOak')
   CraftingThesaurus.registerName 'log', new ItemPile('logBirch')
 
-  t.equals(r.matches(craftingGrid ['log']), true)
-  t.equals(r.matches(craftingGrid ['logOak']), true)
-  t.equals(r.matches(craftingGrid ['logBirch']), true)
-  t.equals(r.matches(craftingGrid ['logWhatever']), false)
+  t.equals(r.matches(craftingGrid2 ['log']), true)
+  t.equals(r.matches(craftingGrid2 ['logOak']), true)
+  t.equals(r.matches(craftingGrid2 ['logBirch']), true)
+  t.equals(r.matches(craftingGrid2 ['logWhatever']), false)
 
   t.end()
 
 test 'take craft empty', (t) ->
   r = new AmorphousRecipe ['log'], new ItemPile('plank')
  
-  grid = craftingGrid ['log']
+  grid = craftingGrid2 ['log']
   output = r.craft(grid)
   t.equals(!!output, true)
   console.log 'output',output
@@ -106,12 +115,12 @@ test 'positional recipe match one row', (t) ->
 
   r = new PositionalRecipe [['first', 'second']], new ItemPile('output', 2)
 
-  t.equal(r.matches(craftingGrid ['first', 'second']), true)
-  t.equal(r.matches(craftingGrid ['first']), false)
-  t.equal(r.matches(craftingGrid ['second']), false)
-  t.equal(r.matches(craftingGrid ['second', 'first']), false)
-  t.equal(r.matches(craftingGrid [undefined, 'first']), false)
-  t.equal(r.matches(craftingGrid [undefined, 'first', 'second']), false)
+  t.equal(r.matches(craftingGrid2 ['first', 'second']), true)
+  t.equal(r.matches(craftingGrid2 ['first']), false)
+  t.equal(r.matches(craftingGrid2 ['second']), false)
+  t.equal(r.matches(craftingGrid2 ['second', 'first']), false)
+  t.equal(r.matches(craftingGrid2 [undefined, 'first']), false)
+  t.equal(r.matches(craftingGrid2 [undefined, 'first', 'second']), false)
 
   t.end()
 
@@ -120,5 +129,10 @@ test 'positional recipe match two rows', (t) ->
       ['ingot', undefined, 'ingot'],
       [undefined, 'ingot', undefined]
     ], new ItemPile('bucket')
+
+  # TODO
+  #t.equal(r.matches(craftingGrid3 [
+  #  'ingot', undefined, 'ingot', 
+  #  undefined, 'ingot'], true))
 
   t.end()
