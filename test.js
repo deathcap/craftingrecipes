@@ -27,7 +27,7 @@
 
   craftingGrid = function(names) {
     var i, input, _i, _ref1;
-    input = new Inventory(4);
+    input = new Inventory(2, 2);
     for (i = _i = 0, _ref1 = names.length; 0 <= _ref1 ? _i < _ref1 : _i > _ref1; i = 0 <= _ref1 ? ++_i : --_i) {
       if (names[i] != null) {
         input.set(i, new ItemPile(names[i], 1));
@@ -110,7 +110,7 @@
     return t.end();
   });
 
-  test('positional recipe match', function(t) {
+  test('positional recipe match one row', function(t) {
     var r;
     r = new PositionalRecipe([['first', 'second']], new ItemPile('output', 2));
     t.equal(r.matches(craftingGrid(['first', 'second'])), true);
@@ -119,6 +119,12 @@
     t.equal(r.matches(craftingGrid(['second', 'first'])), false);
     t.equal(r.matches(craftingGrid([void 0, 'first'])), false);
     t.equal(r.matches(craftingGrid([void 0, 'first', 'second'])), false);
+    return t.end();
+  });
+
+  test('positional recipe match two rows', function(t) {
+    var r;
+    r = new PositionalRecipe([['ingot', void 0, 'ingot'], [void 0, 'ingot', void 0]], new ItemPile('bucket'));
     return t.end();
   });
 

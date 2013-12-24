@@ -24,7 +24,7 @@ test 'thesaurus register', (t) ->
 
 # convenience function to create inventory with items of given names, one each
 craftingGrid = (names) ->
-  input = new Inventory(4)
+  input = new Inventory(2, 2)
   for i in [0...names.length]
     input.set i, new ItemPile(names[i], 1) if names[i]?
   return input
@@ -102,7 +102,7 @@ test 'take craft leftover', (t) ->
 
   t.end()
 
-test 'positional recipe match', (t) ->
+test 'positional recipe match one row', (t) ->
 
   r = new PositionalRecipe [['first', 'second']], new ItemPile('output', 2)
 
@@ -112,5 +112,13 @@ test 'positional recipe match', (t) ->
   t.equal(r.matches(craftingGrid ['second', 'first']), false)
   t.equal(r.matches(craftingGrid [undefined, 'first']), false)
   t.equal(r.matches(craftingGrid [undefined, 'first', 'second']), false)
+
+  t.end()
+
+test 'positional recipe match two rows', (t) ->
+  r = new PositionalRecipe [
+      ['ingot', undefined, 'ingot'],
+      [undefined, 'ingot', undefined]
+    ], new ItemPile('bucket')
 
   t.end()
