@@ -107,5 +107,6 @@ test 'positional recipe match', (t) ->
   r = new PositionalRecipe [['black', 'white']], new ItemPile('gray', 2)
 
   t.equal(r.matches(craftingGrid ['black', 'white']), true)
+  t.equal(r.matches(craftingGrid ['white', 'black']), false)
 
   t.end()

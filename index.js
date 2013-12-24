@@ -127,23 +127,22 @@
     }
 
     PositionalRecipe.prototype.findMatchingSlots = function(inventory) {
-      var col, row, _i, _len, _ref, _results;
+      var actualPile, expectedName, foundIndices, i, index, j, row, _i, _j, _len, _len1, _ref;
+      foundIndices = [];
       _ref = this.ingredientMatrix;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        row = _ref[_i];
-        console.log('row', row);
-        _results.push((function() {
-          var _j, _len1, _results1;
-          _results1 = [];
-          for (_j = 0, _len1 = row.length; _j < _len1; _j++) {
-            col = row[_j];
-            _results1.push(console.log('col', col));
+      for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+        row = _ref[i];
+        for (j = _j = 0, _len1 = row.length; _j < _len1; j = ++_j) {
+          expectedName = row[j];
+          index = j + i * inventory.width;
+          actualPile = inventory.get(index);
+          if (!CraftingThesaurus.matchesName(expectedName, actualPile)) {
+            return void 0;
           }
-          return _results1;
-        })());
+          foundIndices.push(index);
+        }
       }
-      return _results;
+      return foundIndices;
     };
 
     PositionalRecipe.prototype.computeOutput = function(inventory) {

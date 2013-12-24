@@ -71,11 +71,19 @@ class PositionalRecipe extends Recipe
   constructor: (@ingredientMatrix, @output) ->
 
   findMatchingSlots: (inventory) ->
-    for row in @ingredientMatrix
-      console.log 'row',row
-      for col in row
-        console.log 'col',col
-    # TODO
+    # inventory input ingredients must match @ingredientMatrix at same positions
+    foundIndices = []
+    for row, i in @ingredientMatrix
+      for expectedName, j in row
+        index = j + i * inventory.width
+        actualPile = inventory.get(index)
+
+        if not CraftingThesaurus.matchesName(expectedName, actualPile)
+          return undefined
+
+        foundIndices.push(index)
+
+    return foundIndices
 
   computeOutput: (inventory) ->
     return @output.clone() if @findMatchingSlots(inventory) != undefined
