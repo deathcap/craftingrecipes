@@ -76,7 +76,7 @@
 
     AmorphousRecipe.prototype.findMatchingSlots = function(inventory) {
       var foundIndices, i, itemPile, pendingIngredients, _i, _ref;
-      pendingIngredients = JSON.parse(JSON.stringify(this.ingredients));
+      pendingIngredients = this.ingredients.slice(0);
       foundIndices = [];
       for (i = _i = 0, _ref = inventory.size(); 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
         itemPile = inventory.get(i);

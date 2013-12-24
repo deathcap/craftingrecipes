@@ -33,7 +33,7 @@ class AmorphousRecipe extends Recipe
 
 
   findMatchingSlots: (inventory) ->
-    pendingIngredients = JSON.parse(JSON.stringify(@ingredients)) # TODO: fix ugly clone hack
+    pendingIngredients = @ingredients[..]
     foundIndices = []
 
     for i in [0...inventory.size()]
