@@ -130,9 +130,8 @@ test 'positional recipe match two rows', (t) ->
       [undefined, 'ingot', undefined]
     ], new ItemPile('bucket')
 
-  # TODO
-  #t.equal(r.matches(craftingGrid3 [
-  #  'ingot', undefined, 'ingot', 
-  #  undefined, 'ingot'], true))
+  t.equal(r.matches(craftingGrid3 [
+    'ingot', undefined, 'ingot', 
+    undefined, 'ingot']), true)
 
   t.end()

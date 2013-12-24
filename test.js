@@ -139,6 +139,7 @@
   test('positional recipe match two rows', function(t) {
     var r;
     r = new PositionalRecipe([['ingot', void 0, 'ingot'], [void 0, 'ingot', void 0]], new ItemPile('bucket'));
+    t.equal(r.matches(craftingGrid3(['ingot', void 0, 'ingot', void 0, 'ingot'])), true);
     return t.end();
   });
 

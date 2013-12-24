@@ -18,6 +18,9 @@
 
     CraftingThesaurus.matchesName = function(lookupName, itemPile) {
       var a;
+      if (lookupName === void 0 && itemPile === void 0) {
+        return true;
+      }
       if (itemPile == null) {
         return false;
       }
@@ -137,11 +140,13 @@
           index = j + i * inventory.width;
           actualPile = inventory.get(index);
           if (!CraftingThesaurus.matchesName(expectedName, actualPile)) {
+            console.log('fail match', expectedName, actualPile);
             return void 0;
           }
           foundIndices.push(index);
         }
       }
+      console.log('foundIndices=', foundIndices);
       return foundIndices;
     };
 

@@ -8,9 +8,11 @@ class CraftingThesaurus
     CraftingThesaurus.map[lookupName].push(itemPile.item)
 
   @matchesName: (lookupName, itemPile) ->
+    return true if lookupName == undefined && itemPile == undefined # nothing matches nothing
     return false if not itemPile?
-    return true if itemPile.item == lookupName
-    
+    return true if itemPile.item == lookupName  # direct name match
+   
+    # known alias?
     a = CraftingThesaurus.map[lookupName]
     return false if not a?
     return a.indexOf(itemPile.item) != -1
@@ -79,17 +81,17 @@ class PositionalRecipe extends Recipe
         actualPile = inventory.get(index)
 
         if not CraftingThesaurus.matchesName(expectedName, actualPile)
+          console.log 'fail match',expectedName,actualPile
           return undefined
 
         foundIndices.push(index)
 
+    console.log 'foundIndices=',foundIndices
     return foundIndices
 
   computeOutput: (inventory) ->
     return @output.clone() if @findMatchingSlots(inventory) != undefined
     undefined
-
-
 
 
 class RecipeLocator
