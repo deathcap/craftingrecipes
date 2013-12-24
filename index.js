@@ -50,24 +50,6 @@
       return void 0;
     };
 
-    Recipe.prototype.findIngredient = function(inventory, ingredient, excludedSlots) {
-      var i, itemPile, _i, _ref;
-      for (i = _i = 0, _ref = inventory.size(); 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-        if (excludedSlots.indexOf(i) !== -1) {
-          continue;
-        }
-        itemPile = inventory.get(i);
-        if (itemPile == null) {
-          continue;
-        }
-        if (CraftingThesaurus.matchesName(ingredient, itemPile)) {
-          console.log('findIngredient match:', ingredient, itemPile + '');
-          return i;
-        }
-      }
-      return void 0;
-    };
-
     return Recipe;
 
   })();
@@ -80,25 +62,40 @@
       this.output = output;
     }
 
-    AmorphousRecipe.prototype.findMatchingSlots = function(inventory) {
-      var foundIndex, foundIndices, ingredient, _i, _len, _ref;
-      foundIndices = [];
-      _ref = this.ingredients;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        ingredient = _ref[_i];
-        foundIndex = this.findIngredient(inventory, ingredient, foundIndices);
-        console.log('check ingredient=', ingredient, 'foundIndex=', foundIndex);
-        if (foundIndex == null) {
-          return false;
+    AmorphousRecipe.prototype.removeIngredient = function(itemPile, pendingIngredients) {
+      var i, testIngredient, _i, _len;
+      for (i = _i = 0, _len = pendingIngredients.length; _i < _len; i = ++_i) {
+        testIngredient = pendingIngredients[i];
+        if (CraftingThesaurus.matchesName(testIngredient, itemPile)) {
+          pendingIngredients.splice(i, 1);
+          return true;
         }
-        foundIndices.push(foundIndex);
       }
-      console.log('foundIndices', foundIndices);
+      return false;
+    };
+
+    AmorphousRecipe.prototype.findMatchingSlots = function(inventory) {
+      var foundIndices, i, itemPile, pendingIngredients, _i, _ref;
+      pendingIngredients = JSON.parse(JSON.stringify(this.ingredients));
+      foundIndices = [];
+      for (i = _i = 0, _ref = inventory.size(); 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+        itemPile = inventory.get(i);
+        if (itemPile == null) {
+          continue;
+        }
+        if (!this.removeIngredient(itemPile, pendingIngredients)) {
+          return void 0;
+        }
+        foundIndices.push(i);
+      }
+      if (pendingIngredients.length !== 0) {
+        return void 0;
+      }
       return foundIndices;
     };
 
     AmorphousRecipe.prototype.computeOutput = function(inventory) {
-      if (this.findMatchingSlots(inventory) !== false) {
+      if (this.findMatchingSlots(inventory) !== void 0) {
         return this.output.clone();
       }
       return void 0;

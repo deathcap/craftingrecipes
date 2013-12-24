@@ -29,12 +29,14 @@
     var i, input, _i, _ref1;
     input = new Inventory(4);
     for (i = _i = 0, _ref1 = names.length; 0 <= _ref1 ? _i < _ref1 : _i > _ref1; i = 0 <= _ref1 ? ++_i : --_i) {
-      input.set(i, new ItemPile(names[i], 1));
+      if (names[i] != null) {
+        input.set(i, new ItemPile(names[i], 1));
+      }
     }
     return input;
   };
 
-  test('simple recipe match', function(t) {
+  test('amorphous simple recipe match', function(t) {
     var r;
     r = new AmorphousRecipe(['log'], new ItemPile('plank'));
     t.equals(r.matches(craftingGrid(['log'])), true);
@@ -44,14 +46,21 @@
     return t.end();
   });
 
-  test('double ingredients', function(t) {
+  test('amorphous double ingredients', function(t) {
     var r;
     r = new AmorphousRecipe(['plank', 'plank'], new ItemPile('stick'));
     t.equals(r.matches(craftingGrid(['plank'])), false);
     t.equals(r.matches(craftingGrid(['plank', 'plank'])), true);
-    t.equals(r.matches(craftingGrid(['plank', 'plank', 'plank'])), true);
     t.equals(r.matches(craftingGrid([void 0, 'plank', 'plank'])), true);
     t.equals(r.matches(craftingGrid([void 0, void 0, 'plank', 'plank'])), true);
+    return t.end();
+  });
+
+  test('amorphous extraneous inputs', function(t) {
+    var r;
+    r = new AmorphousRecipe(['plank', 'plank'], new ItemPile('stick'));
+    t.equals(r.matches(craftingGrid(['plank', 'plank', 'plank'])), false);
+    t.equals(r.matches(craftingGrid(['plank', 'plank', 'plank', 'plank'])), false);
     return t.end();
   });
 

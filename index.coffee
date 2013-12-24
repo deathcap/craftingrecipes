@@ -20,38 +20,40 @@ class Recipe
   matches: (inventory) -> @computeOutput(inventory) != undefined
   craft: (inventory) -> undefined
 
-  findIngredient: (inventory, ingredient, excludedSlots) ->
-    for i in [0...inventory.size()]
-      continue if excludedSlots.indexOf(i) != -1
-
-      itemPile = inventory.get(i)
-      continue if not itemPile?
-
-      if CraftingThesaurus.matchesName(ingredient, itemPile)
-        console.log 'findIngredient match:',ingredient,itemPile+''
-        return i
-
-    return undefined
-
 class AmorphousRecipe extends Recipe
   constructor: (@ingredients, @output) ->
 
+  # if itemPile is in pendingIngredients, remove it
+  removeIngredient: (itemPile, pendingIngredients) ->
+    for testIngredient, i in pendingIngredients
+      if CraftingThesaurus.matchesName(testIngredient, itemPile)
+        pendingIngredients.splice(i, 1)
+        return true
+    return false
+
+
   findMatchingSlots: (inventory) ->
+    pendingIngredients = JSON.parse(JSON.stringify(@ingredients)) # TODO: fix ugly clone hack
     foundIndices = []
-    for ingredient in @ingredients
 
-      # search in inventory
-      # cannot reuse found item slots for multiple ingredients
-      foundIndex = @findIngredient(inventory, ingredient, foundIndices)
-      console.log 'check ingredient=',ingredient,'foundIndex=',foundIndex
-      return false if not foundIndex?
-      foundIndices.push(foundIndex)
+    for i in [0...inventory.size()]
+      itemPile = inventory.get(i)
+      continue if not itemPile?
 
-    console.log 'foundIndices',foundIndices
+      if not @removeIngredient(itemPile, pendingIngredients)
+        # found something we didn't want
+        return undefined
+
+      foundIndices.push(i)
+
+    if pendingIngredients.length != 0
+      # didn't find everything
+      return undefined
+
     return foundIndices
    
   computeOutput: (inventory) ->
-    return @output.clone() if @findMatchingSlots(inventory) != false
+    return @output.clone() if @findMatchingSlots(inventory) != undefined
     undefined
 
   craft: (inventory) ->

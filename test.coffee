@@ -26,10 +26,10 @@ test 'thesaurus register', (t) ->
 craftingGrid = (names) ->
   input = new Inventory(4)
   for i in [0...names.length]
-    input.set i, new ItemPile(names[i], 1)
+    input.set i, new ItemPile(names[i], 1) if names[i]?
   return input
 
-test 'simple recipe match', (t) ->
+test 'amorphous simple recipe match', (t) ->
   r = new AmorphousRecipe ['log'], new ItemPile('plank')
 
   t.equals(r.matches(craftingGrid ['log']), true)
@@ -38,14 +38,20 @@ test 'simple recipe match', (t) ->
   t.equals(r.matches(craftingGrid [undefined, undefined, undefined, 'log']), true)
   t.end()
 
-test 'double ingredients', (t) ->
+test 'amorphous double ingredients', (t) ->
   r = new AmorphousRecipe ['plank', 'plank'], new ItemPile('stick')
 
   t.equals(r.matches(craftingGrid ['plank']), false)
   t.equals(r.matches(craftingGrid ['plank', 'plank']), true)
-  t.equals(r.matches(craftingGrid ['plank', 'plank', 'plank']), true)
   t.equals(r.matches(craftingGrid [undefined,'plank', 'plank']), true)
   t.equals(r.matches(craftingGrid [undefined, undefined,'plank', 'plank']), true)
+  t.end()
+
+test 'amorphous extraneous inputs', (t) ->
+  r = new AmorphousRecipe ['plank', 'plank'], new ItemPile('stick')
+
+  t.equals(r.matches(craftingGrid ['plank', 'plank', 'plank']), false)
+  t.equals(r.matches(craftingGrid ['plank', 'plank', 'plank', 'plank']), false)
   t.end()
 
 test 'craft thesaurus', (t) ->
