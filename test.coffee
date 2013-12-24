@@ -130,8 +130,24 @@ test 'positional recipe match two rows', (t) ->
       [undefined, 'ingot', undefined]
     ], new ItemPile('bucket')
 
-  t.equal(r.matches(craftingGrid3 [
-    'ingot', undefined, 'ingot', 
-    undefined, 'ingot']), true)
+  t.equal(r.matches(craftingGrid3 ['ingot', undefined, 'ingot',   undefined, 'ingot']), true)
+  t.equal(r.matches(craftingGrid3 ['ingot', undefined, 'ingot']), false)
+  t.equal(r.matches(craftingGrid3 ['ingot']), false)
+
+  t.end()
+
+test 'positional recipe craft', (t) ->
+  r = new PositionalRecipe [
+      ['ingot', undefined, 'ingot'],
+      [undefined, 'ingot', undefined]
+    ], new ItemPile('bucket')
+
+  grid = craftingGrid3 ['ingot', undefined, 'ingot',   undefined, 'ingot']
+  output = r.craft(grid)
+  t.equals(!!output, true)
+  t.equals(output.item, 'bucket')
+  console.log 'new grid',grid
+  for i in [0...grid.size()]
+    t.equals(grid.get(i), undefined)
 
   t.end()

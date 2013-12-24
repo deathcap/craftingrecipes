@@ -93,6 +93,16 @@ class PositionalRecipe extends Recipe
     return @output.clone() if @findMatchingSlots(inventory) != undefined
     undefined
 
+  # TODO: refactor with AmorphousRecipe
+  craft: (inventory) ->
+    slots = @findMatchingSlots(inventory)
+    return undefined if !slots
+
+    for slot in slots
+      inventory.takeAt slot, 1 # TODO: check return
+
+    return @output.clone()
+
 
 class RecipeLocator
   @recipes = []

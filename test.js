@@ -140,6 +140,22 @@
     var r;
     r = new PositionalRecipe([['ingot', void 0, 'ingot'], [void 0, 'ingot', void 0]], new ItemPile('bucket'));
     t.equal(r.matches(craftingGrid3(['ingot', void 0, 'ingot', void 0, 'ingot'])), true);
+    t.equal(r.matches(craftingGrid3(['ingot', void 0, 'ingot'])), false);
+    t.equal(r.matches(craftingGrid3(['ingot'])), false);
+    return t.end();
+  });
+
+  test('positional recipe craft', function(t) {
+    var grid, i, output, r, _i, _ref1;
+    r = new PositionalRecipe([['ingot', void 0, 'ingot'], [void 0, 'ingot', void 0]], new ItemPile('bucket'));
+    grid = craftingGrid3(['ingot', void 0, 'ingot', void 0, 'ingot']);
+    output = r.craft(grid);
+    t.equals(!!output, true);
+    t.equals(output.item, 'bucket');
+    console.log('new grid', grid);
+    for (i = _i = 0, _ref1 = grid.size(); 0 <= _ref1 ? _i < _ref1 : _i > _ref1; i = 0 <= _ref1 ? ++_i : --_i) {
+      t.equals(grid.get(i), void 0);
+    }
     return t.end();
   });
 
