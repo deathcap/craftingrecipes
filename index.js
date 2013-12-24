@@ -121,39 +121,27 @@
   PositionalRecipe = (function(_super) {
     __extends(PositionalRecipe, _super);
 
-    function PositionalRecipe(pattern, ingredientMap, output) {
-      this.pattern = pattern;
-      this.ingredientMap = ingredientMap;
+    function PositionalRecipe(ingredientMatrix, output) {
+      this.ingredientMatrix = ingredientMatrix;
       this.output = output;
-      this.recipeWidth = this.computeWidth();
     }
 
-    PositionalRecipe.prototype.computeWidth = function() {
-      var line, maxWidth, _i, _len, _ref;
-      maxWidth = 0;
-      _ref = this.pattern;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        line = _ref[_i];
-        maxWidth = Math.max(maxWidth, line.length);
-      }
-      return maxWidth;
-    };
-
     PositionalRecipe.prototype.findMatchingSlots = function(inventory) {
-      var char, i, ingredient, j, line, _i, _ref, _results;
+      var col, row, _i, _len, _ref, _results;
+      _ref = this.ingredientMatrix;
       _results = [];
-      for (i = _i = 0, _ref = this.pattern.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-        line = this.pattern[i];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        row = _ref[_i];
+        console.log('row', row);
         _results.push((function() {
-          var _j, _ref1, _results1;
+          var _j, _len1, _results1;
           _results1 = [];
-          for (j = _j = 0, _ref1 = line.length; 0 <= _ref1 ? _j < _ref1 : _j > _ref1; j = 0 <= _ref1 ? ++_j : --_j) {
-            char = line.substr(j, 1);
-            ingredient = this.ingredientMap[char];
-            _results1.push(console.log('char', char, ingredient));
+          for (_j = 0, _len1 = row.length; _j < _len1; _j++) {
+            col = row[_j];
+            _results1.push(console.log('col', col));
           }
           return _results1;
-        }).call(this));
+        })());
       }
       return _results;
     };

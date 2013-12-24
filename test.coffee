@@ -104,7 +104,7 @@ test 'take craft leftover', (t) ->
 
 test 'positional recipe match', (t) ->
 
-  r = new PositionalRecipe ['BW'], {B:'black', W:'white'}, new ItemPile('gray', 2)
+  r = new PositionalRecipe [['black', 'white']], new ItemPile('gray', 2)
 
   t.equal(r.matches(craftingGrid ['black', 'white']), true)
 
