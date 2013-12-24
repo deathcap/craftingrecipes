@@ -112,9 +112,13 @@
 
   test('positional recipe match', function(t) {
     var r;
-    r = new PositionalRecipe([['black', 'white']], new ItemPile('gray', 2));
-    t.equal(r.matches(craftingGrid(['black', 'white'])), true);
-    t.equal(r.matches(craftingGrid(['white', 'black'])), false);
+    r = new PositionalRecipe([['first', 'second']], new ItemPile('output', 2));
+    t.equal(r.matches(craftingGrid(['first', 'second'])), true);
+    t.equal(r.matches(craftingGrid(['first'])), false);
+    t.equal(r.matches(craftingGrid(['second'])), false);
+    t.equal(r.matches(craftingGrid(['second', 'first'])), false);
+    t.equal(r.matches(craftingGrid([void 0, 'first'])), false);
+    t.equal(r.matches(craftingGrid([void 0, 'first', 'second'])), false);
     return t.end();
   });
 
