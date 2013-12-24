@@ -151,3 +151,40 @@ test 'positional recipe craft', (t) ->
     t.equals(grid.get(i), undefined)
 
   t.end()
+
+test 'positional recipe craft leftover', (t) ->
+  r = new PositionalRecipe [
+      ['ingot', undefined, 'ingot'],
+      [undefined, 'ingot', undefined]
+    ], new ItemPile('bucket')
+
+  grid = new Inventory(3, 3)
+
+  grid.set 0, new ItemPile('ingot', 10)
+  grid.set 2, new ItemPile('ingot', 5)
+  grid.set 4, new ItemPile('ingot', 3)
+ 
+  output = r.craft(grid)
+  t.equals(!!output, true)
+  t.equals(output.item, 'bucket')
+  console.log 'new grid',grid
+
+  t.equal(grid.get(0) != undefined, true)
+  t.equal(grid.get(0).item, 'ingot')
+  t.equal(grid.get(0).count, 10 - 1)
+
+  t.equal(grid.get(2) != undefined, true)
+  t.equal(grid.get(2).item, 'ingot')
+  t.equal(grid.get(2).count, 5 - 1)
+
+  t.equal(grid.get(4) != undefined, true)
+  t.equal(grid.get(4).item, 'ingot')
+  t.equal(grid.get(4).count, 3 - 1)
+
+  for i in [0...grid.size()]
+    continue if i in [0, 2, 4]
+    t.equals(grid.get(i), undefined)
+
+  t.end()
+
+

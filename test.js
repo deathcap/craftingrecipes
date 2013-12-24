@@ -159,4 +159,33 @@
     return t.end();
   });
 
+  test('positional recipe craft leftover', function(t) {
+    var grid, i, output, r, _i, _ref1;
+    r = new PositionalRecipe([['ingot', void 0, 'ingot'], [void 0, 'ingot', void 0]], new ItemPile('bucket'));
+    grid = new Inventory(3, 3);
+    grid.set(0, new ItemPile('ingot', 10));
+    grid.set(2, new ItemPile('ingot', 5));
+    grid.set(4, new ItemPile('ingot', 3));
+    output = r.craft(grid);
+    t.equals(!!output, true);
+    t.equals(output.item, 'bucket');
+    console.log('new grid', grid);
+    t.equal(grid.get(0) !== void 0, true);
+    t.equal(grid.get(0).item, 'ingot');
+    t.equal(grid.get(0).count, 10 - 1);
+    t.equal(grid.get(2) !== void 0, true);
+    t.equal(grid.get(2).item, 'ingot');
+    t.equal(grid.get(2).count, 5 - 1);
+    t.equal(grid.get(4) !== void 0, true);
+    t.equal(grid.get(4).item, 'ingot');
+    t.equal(grid.get(4).count, 3 - 1);
+    for (i = _i = 0, _ref1 = grid.size(); 0 <= _ref1 ? _i < _ref1 : _i > _ref1; i = 0 <= _ref1 ? ++_i : --_i) {
+      if (i === 0 || i === 2 || i === 4) {
+        continue;
+      }
+      t.equals(grid.get(i), void 0);
+    }
+    return t.end();
+  });
+
 }).call(this);
