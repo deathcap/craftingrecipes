@@ -187,4 +187,23 @@ test 'positional recipe craft leftover', (t) ->
 
   t.end()
 
+test 'positional recipe three rows', (t) ->
+  r = new PositionalRecipe [
+    ['wood.plank', 'wood.plank', 'wood.plank'],
+    [undefined, 'stick', undefined],
+    [undefined, 'stick', undefined]], new ItemPile('pickaxeWood', 1)
+
+  grid = craftingGrid3 [
+    'wood.plank', 'wood.plank', 'wood.plank',
+    undefined, 'stick', undefined,
+    undefined, 'stick', undefined]
+  output = r.craft(grid)
+  t.equals(!!output, true)
+  t.equals(output.item, 'pickaxeWood')
+
+  for i in [0...grid.size()]
+    t.equals(grid.get(i), undefined)
+
+
+  t.end()
 
