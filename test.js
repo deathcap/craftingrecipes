@@ -110,4 +110,14 @@
     return t.end();
   });
 
+  test('positional recipe match', function(t) {
+    var r;
+    r = new PositionalRecipe(['BW'], {
+      B: 'black',
+      W: 'white'
+    }, new ItemPile('gray', 2));
+    t.equal(r.matches(craftingGrid(['black', 'white'])), true);
+    return t.end();
+  });
+
 }).call(this);

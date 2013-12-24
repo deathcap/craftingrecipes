@@ -67,7 +67,7 @@ class AmorphousRecipe extends Recipe
 
 
 class PositionalRecipe extends Recipe
-  constructor: (@pattern, @ingredients, @output) ->
+  constructor: (@pattern, @ingredientMap, @output) ->
     @recipeWidth = @computeWidth()
 
   computeWidth: () ->
@@ -76,8 +76,22 @@ class PositionalRecipe extends Recipe
       maxWidth = Math.max(maxWidth, line.length)
     return maxWidth
 
-  findMatchingSlots: (inventory, inventoryWidth) ->
+  findMatchingSlots: (inventory) ->
+    for i in [0...@pattern.length]
+      line = @pattern[i]
+      for j in [0...line.length]
+        char = line.substr(j, 1)
+        ingredient = @ingredientMap[char]
+
+        console.log 'char',char,ingredient
     # TODO
+
+  computeOutput: (inventory) ->
+    return @output.clone() if @findMatchingSlots(inventory) != undefined
+    undefined
+
+
+
 
 class RecipeLocator
   @recipes = []
