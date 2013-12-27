@@ -104,21 +104,22 @@ class PositionalRecipe extends Recipe
     return @output.clone()
 
 
-class RecipeLocator
-  @recipes = []
+class RecipeList
+  constructor: () ->
+    @recipes = []
 
-  @register: (recipe) ->
-    RecipeLocator.recipes.push(recipe)
+  register: (recipe) ->
+    @recipes.push(recipe)
 
-  @find: (inventory) ->
-    for recipe in RecipeLocator.recipes
+  find: (inventory) ->
+    for recipe in @recipes
       return recipe if recipe.computeOutput(inventory) != undefined
     return undefined
 
-  @craft: (inventory) ->
-    for recipe in RecipeLocator.recipes
+  craft: (inventory) ->
+    for recipe in @recipes
       output = recipe.craft(inventory)
       return output if output
     return undefined
 
-module.exports = {Recipe, AmorphousRecipe, PositionalRecipe, CraftingThesaurus, RecipeLocator}
+module.exports = {Recipe, AmorphousRecipe, PositionalRecipe, CraftingThesaurus, RecipeList}
