@@ -212,12 +212,18 @@
 
   })();
 
-  module.exports = {
-    Recipe: Recipe,
-    AmorphousRecipe: AmorphousRecipe,
-    PositionalRecipe: PositionalRecipe,
-    CraftingThesaurus: CraftingThesaurus,
-    RecipeList: RecipeList
+  module.exports = function(game, opts) {
+    return new RecipeList();
   };
+
+  module.exports.Recipe = Recipe;
+
+  module.exports.AmorphousRecipe = AmorphousRecipe;
+
+  module.exports.PositionalRecipe = PositionalRecipe;
+
+  module.exports.CraftingThesaurus = CraftingThesaurus;
+
+  module.exports.RecipeList = RecipeList;
 
 }).call(this);

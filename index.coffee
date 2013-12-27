@@ -122,4 +122,12 @@ class RecipeList
       return output if output
     return undefined
 
-module.exports = {Recipe, AmorphousRecipe, PositionalRecipe, CraftingThesaurus, RecipeList}
+module.exports = (game, opts) ->
+  return new RecipeList()
+
+module.exports.Recipe = Recipe
+module.exports.AmorphousRecipe = AmorphousRecipe
+module.exports.PositionalRecipe = PositionalRecipe
+module.exports.CraftingThesaurus = CraftingThesaurus
+module.exports.RecipeList = RecipeList
+
