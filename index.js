@@ -5,18 +5,21 @@
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   CraftingThesaurus = (function() {
-    function CraftingThesaurus() {}
+    CraftingThesaurus.instance = void 0;
 
-    CraftingThesaurus.map = {};
+    function CraftingThesaurus() {
+      this.map = {};
+      CraftingThesaurus.instance = this;
+    }
 
-    CraftingThesaurus.registerName = function(lookupName, itemPile) {
-      if (CraftingThesaurus.map[lookupName] == null) {
-        CraftingThesaurus.map[lookupName] = [];
+    CraftingThesaurus.prototype.registerName = function(lookupName, itemPile) {
+      if (this.map[lookupName] == null) {
+        this.map[lookupName] = [];
       }
-      return CraftingThesaurus.map[lookupName].push(itemPile.item);
+      return this.map[lookupName].push(itemPile.item);
     };
 
-    CraftingThesaurus.matchesName = function(lookupName, itemPile) {
+    CraftingThesaurus.prototype.matchesName = function(lookupName, itemPile) {
       var a;
       if (lookupName === void 0 && itemPile === void 0) {
         return true;
@@ -27,7 +30,7 @@
       if (itemPile.item === lookupName) {
         return true;
       }
-      a = CraftingThesaurus.map[lookupName];
+      a = this.map[lookupName];
       if (a == null) {
         return false;
       }
@@ -69,7 +72,7 @@
       var i, testIngredient, _i, _len;
       for (i = _i = 0, _len = pendingIngredients.length; _i < _len; i = ++_i) {
         testIngredient = pendingIngredients[i];
-        if (CraftingThesaurus.matchesName(testIngredient, itemPile)) {
+        if (CraftingThesaurus.instance.matchesName(testIngredient, itemPile)) {
           pendingIngredients.splice(i, 1);
           return true;
         }
@@ -139,7 +142,7 @@
           expectedName = row[j];
           index = j + i * inventory.width;
           actualPile = inventory.get(index);
-          if (!CraftingThesaurus.matchesName(expectedName, actualPile)) {
+          if (!CraftingThesaurus.instance.matchesName(expectedName, actualPile)) {
             console.log('fail match', expectedName, actualPile);
             return void 0;
           }
@@ -177,6 +180,7 @@
   RecipeList = (function() {
     function RecipeList() {
       this.recipes = [];
+      this.thesaurus = new CraftingThesaurus();
     }
 
     RecipeList.prototype.register = function(recipe) {

@@ -1,19 +1,23 @@
 # vim: set shiftwidth=2 tabstop=2 softtabstop=2 expandtab:
 
 class CraftingThesaurus 
-  @map = {}
+  @instance = undefined
 
-  @registerName: (lookupName, itemPile) ->
-    CraftingThesaurus.map[lookupName] = [] if not CraftingThesaurus.map[lookupName]?
-    CraftingThesaurus.map[lookupName].push(itemPile.item)
+  constructor: () ->
+    @map = {}
+    CraftingThesaurus.instance = this # TODO: desingletonify?
 
-  @matchesName: (lookupName, itemPile) ->
+  registerName: (lookupName, itemPile) ->
+    @map[lookupName] = [] if not @map[lookupName]?
+    @map[lookupName].push(itemPile.item)
+
+  matchesName: (lookupName, itemPile) ->
     return true if lookupName == undefined && itemPile == undefined # nothing matches nothing
     return false if not itemPile?
     return true if itemPile.item == lookupName  # direct name match
    
     # known alias?
-    a = CraftingThesaurus.map[lookupName]
+    a = @map[lookupName]
     return false if not a?
     return a.indexOf(itemPile.item) != -1
 
@@ -28,7 +32,7 @@ class AmorphousRecipe extends Recipe
   # if itemPile is in pendingIngredients, remove it
   removeIngredient: (itemPile, pendingIngredients) ->
     for testIngredient, i in pendingIngredients
-      if CraftingThesaurus.matchesName(testIngredient, itemPile)
+      if CraftingThesaurus.instance.matchesName(testIngredient, itemPile)
         pendingIngredients.splice(i, 1)
         return true
     return false
@@ -80,7 +84,7 @@ class PositionalRecipe extends Recipe
         index = j + i * inventory.width
         actualPile = inventory.get(index)
 
-        if not CraftingThesaurus.matchesName(expectedName, actualPile)
+        if not CraftingThesaurus.instance.matchesName(expectedName, actualPile)
           console.log 'fail match',expectedName,actualPile
           return undefined
 
@@ -107,6 +111,7 @@ class PositionalRecipe extends Recipe
 class RecipeList
   constructor: () ->
     @recipes = []
+    @thesaurus = new CraftingThesaurus()
 
   register: (recipe) ->
     @recipes.push(recipe)
