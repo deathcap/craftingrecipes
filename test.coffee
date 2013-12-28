@@ -6,19 +6,21 @@ Inventory = require 'inventory'
 ItemPile = require 'itempile'
 
 test 'thesaurus register', (t) ->
-  t.equals(CraftingThesaurus.matchesName('logOak', new ItemPile('plankOak')), false)
+  thesaurus = new CraftingThesaurus()
 
-  CraftingThesaurus.registerName 'blackDye', new ItemPile('squidInk')
-  CraftingThesaurus.registerName 'blackDye', new ItemPile('syntheticBlackInk')
-  CraftingThesaurus.registerName 'whiteDye', new ItemPile('bonemeal')
-  CraftingThesaurus.registerName 'whiteDye', new ItemPile('bleach')
+  t.equals(thesaurus.matchesName('logOak', new ItemPile('plankOak')), false)
 
-  t.equals(CraftingThesaurus.matchesName('blackDye', new ItemPile('squidInk')), true)
-  t.equals(CraftingThesaurus.matchesName('blackDye', new ItemPile('syntheticBlackInk')), true)
-  t.equals(CraftingThesaurus.matchesName('blackDye', new ItemPile('something')), false)
-  t.equals(CraftingThesaurus.matchesName('whiteDye', new ItemPile('bonemeal')), true)
-  t.equals(CraftingThesaurus.matchesName('whiteDye', new ItemPile('bleach')), true)
-  t.equals(CraftingThesaurus.matchesName('whiteDye', new ItemPile('dirt')), false)
+  thesaurus.registerName 'blackDye', new ItemPile('squidInk')
+  thesaurus.registerName 'blackDye', new ItemPile('syntheticBlackInk')
+  thesaurus.registerName 'whiteDye', new ItemPile('bonemeal')
+  thesaurus.registerName 'whiteDye', new ItemPile('bleach')
+
+  t.equals(thesaurus.matchesName('blackDye', new ItemPile('squidInk')), true)
+  t.equals(thesaurus.matchesName('blackDye', new ItemPile('syntheticBlackInk')), true)
+  t.equals(thesaurus.matchesName('blackDye', new ItemPile('something')), false)
+  t.equals(thesaurus.matchesName('whiteDye', new ItemPile('bonemeal')), true)
+  t.equals(thesaurus.matchesName('whiteDye', new ItemPile('bleach')), true)
+  t.equals(thesaurus.matchesName('whiteDye', new ItemPile('dirt')), false)
 
   t.end()
 
@@ -66,8 +68,10 @@ test 'amorphous extraneous inputs', (t) ->
 test 'craft thesaurus', (t) ->
   r = new AmorphousRecipe ['log'], new ItemPile('plank')
 
-  CraftingThesaurus.registerName 'log', new ItemPile('logOak')
-  CraftingThesaurus.registerName 'log', new ItemPile('logBirch')
+  # overwrites singleton instance (sorry); recipes below will use it
+  thesaurus = new CraftingThesaurus()
+  thesaurus.registerName 'log', new ItemPile('logOak')
+  thesaurus.registerName 'log', new ItemPile('logBirch')
 
   t.equals(r.matches(craftingGrid2 ['log']), true)
   t.equals(r.matches(craftingGrid2 ['logOak']), true)
