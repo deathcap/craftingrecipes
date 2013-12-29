@@ -7,9 +7,9 @@ class CraftingThesaurus
     @map = {}
     CraftingThesaurus.instance = this # TODO: desingletonify?
 
-  registerName: (lookupName, itemPile) ->
+  registerName: (lookupName, item) ->
     @map[lookupName] = [] if not @map[lookupName]?
-    @map[lookupName].push(itemPile.item)
+    @map[lookupName].push(item)
 
   matchesName: (lookupName, itemPile) ->
     return true if lookupName == undefined && itemPile == undefined # nothing matches nothing

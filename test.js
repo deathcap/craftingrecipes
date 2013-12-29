@@ -14,10 +14,10 @@
     var thesaurus;
     thesaurus = new CraftingThesaurus();
     t.equals(thesaurus.matchesName('logOak', new ItemPile('plankOak')), false);
-    thesaurus.registerName('blackDye', new ItemPile('squidInk'));
-    thesaurus.registerName('blackDye', new ItemPile('syntheticBlackInk'));
-    thesaurus.registerName('whiteDye', new ItemPile('bonemeal'));
-    thesaurus.registerName('whiteDye', new ItemPile('bleach'));
+    thesaurus.registerName('blackDye', 'squidInk');
+    thesaurus.registerName('blackDye', 'syntheticBlackInk');
+    thesaurus.registerName('whiteDye', 'bonemeal');
+    thesaurus.registerName('whiteDye', 'bleach');
     t.equals(thesaurus.matchesName('blackDye', new ItemPile('squidInk')), true);
     t.equals(thesaurus.matchesName('blackDye', new ItemPile('syntheticBlackInk')), true);
     t.equals(thesaurus.matchesName('blackDye', new ItemPile('something')), false);
@@ -84,8 +84,8 @@
     var r, thesaurus;
     r = new AmorphousRecipe(['log'], new ItemPile('plank'));
     thesaurus = new CraftingThesaurus();
-    thesaurus.registerName('log', new ItemPile('logOak'));
-    thesaurus.registerName('log', new ItemPile('logBirch'));
+    thesaurus.registerName('log', 'logOak');
+    thesaurus.registerName('log', 'logBirch');
     t.equals(r.matches(craftingGrid2(['log'])), true);
     t.equals(r.matches(craftingGrid2(['logOak'])), true);
     t.equals(r.matches(craftingGrid2(['logBirch'])), true);

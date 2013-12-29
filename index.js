@@ -12,11 +12,11 @@
       CraftingThesaurus.instance = this;
     }
 
-    CraftingThesaurus.prototype.registerName = function(lookupName, itemPile) {
+    CraftingThesaurus.prototype.registerName = function(lookupName, item) {
       if (this.map[lookupName] == null) {
         this.map[lookupName] = [];
       }
-      return this.map[lookupName].push(itemPile.item);
+      return this.map[lookupName].push(item);
     };
 
     CraftingThesaurus.prototype.matchesName = function(lookupName, itemPile) {
