@@ -10,17 +10,17 @@ test 'thesaurus register', (t) ->
 
   t.equals(thesaurus.matchesName('logOak', new ItemPile('plankOak')), false)
 
-  thesaurus.registerName 'blackDye', 'squidInk'
-  thesaurus.registerName 'blackDye', 'syntheticBlackInk'
-  thesaurus.registerName 'whiteDye', 'bonemeal'
-  thesaurus.registerName 'whiteDye', 'bleach'
+  thesaurus.registerName 'dye.black', 'squidInk'
+  thesaurus.registerName 'dye.black', 'syntheticBlackInk'
+  thesaurus.registerName 'dye.white', 'bonemeal'
+  thesaurus.registerName 'dye.white', 'bleach'
 
-  t.equals(thesaurus.matchesName('blackDye', new ItemPile('squidInk')), true)
-  t.equals(thesaurus.matchesName('blackDye', new ItemPile('syntheticBlackInk')), true)
-  t.equals(thesaurus.matchesName('blackDye', new ItemPile('something')), false)
-  t.equals(thesaurus.matchesName('whiteDye', new ItemPile('bonemeal')), true)
-  t.equals(thesaurus.matchesName('whiteDye', new ItemPile('bleach')), true)
-  t.equals(thesaurus.matchesName('whiteDye', new ItemPile('dirt')), false)
+  t.equals(thesaurus.matchesName('dye.black', new ItemPile('squidInk')), true)
+  t.equals(thesaurus.matchesName('dye.black', new ItemPile('syntheticBlackInk')), true)
+  t.equals(thesaurus.matchesName('dye.black', new ItemPile('something')), false)
+  t.equals(thesaurus.matchesName('dye.white', new ItemPile('bonemeal')), true)
+  t.equals(thesaurus.matchesName('dye.white', new ItemPile('bleach')), true)
+  t.equals(thesaurus.matchesName('dye.white', new ItemPile('dirt')), false)
 
   t.end()
 
@@ -43,6 +43,8 @@ craftingGrid3 = (names) ->
 test 'amorphous simple recipe match', (t) ->
   r = new AmorphousRecipe ['log'], new ItemPile('plank')
 
+  t.equals(r.matches(craftingGrid2 []), false)
+  t.equals(r.matches(craftingGrid2 ['cheeselog']), false)
   t.equals(r.matches(craftingGrid2 ['log']), true)
   t.equals(r.matches(craftingGrid2 [undefined, 'log']), true)
   t.equals(r.matches(craftingGrid2 [undefined, undefined, 'log']), true)
@@ -66,14 +68,14 @@ test 'amorphous extraneous inputs', (t) ->
   t.end()
 
 test 'craft thesaurus', (t) ->
-  r = new AmorphousRecipe ['log'], new ItemPile('plank')
+  r = new AmorphousRecipe ['wood.log'], new ItemPile('plank')
 
   # overwrites singleton instance (sorry); recipes below will use it
   thesaurus = new CraftingThesaurus()
-  thesaurus.registerName 'log', 'logOak'
-  thesaurus.registerName 'log', 'logBirch'
+  thesaurus.registerName 'wood.log', 'logOak'
+  thesaurus.registerName 'wood.log', 'logBirch'
 
-  t.equals(r.matches(craftingGrid2 ['log']), true)
+  t.equals(r.matches(craftingGrid2 ['wood.log']), true)
   t.equals(r.matches(craftingGrid2 ['logOak']), true)
   t.equals(r.matches(craftingGrid2 ['logBirch']), true)
   t.equals(r.matches(craftingGrid2 ['logWhatever']), false)

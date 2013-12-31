@@ -13,6 +13,9 @@
     }
 
     CraftingThesaurus.prototype.registerName = function(lookupName, item) {
+      if (lookupName.indexOf('.') === -1) {
+        throw "craftingrecipes registerName(" + lookupName + "): name is in invalid format, should be 'shape.material'";
+      }
       if (this.map[lookupName] == null) {
         this.map[lookupName] = [];
       }

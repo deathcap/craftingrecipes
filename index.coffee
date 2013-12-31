@@ -8,6 +8,8 @@ class CraftingThesaurus
     CraftingThesaurus.instance = this # TODO: desingletonify?
 
   registerName: (lookupName, item) ->
+    throw "craftingrecipes registerName(#{lookupName}): name is in invalid format, should be 'shape.material'" if lookupName.indexOf('.') == -1
+
     @map[lookupName] = [] if not @map[lookupName]?
     @map[lookupName].push(item)
 
