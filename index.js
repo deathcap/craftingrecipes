@@ -146,13 +146,11 @@
           index = j + i * inventory.width;
           actualPile = inventory.get(index);
           if (!CraftingThesaurus.instance.matchesName(expectedName, actualPile)) {
-            console.log('fail match', expectedName, actualPile);
             return void 0;
           }
           foundIndices.push(index);
         }
       }
-      console.log('foundIndices=', foundIndices);
       return foundIndices;
     };
 

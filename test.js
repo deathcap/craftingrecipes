@@ -71,6 +71,9 @@
     t.equals(r.matches(craftingGrid2(['plank', 'plank'])), true);
     t.equals(r.matches(craftingGrid2([void 0, 'plank', 'plank'])), true);
     t.equals(r.matches(craftingGrid2([void 0, void 0, 'plank', 'plank'])), true);
+    t.equals(r.matches(craftingGrid2(['plank', void 0, 'plank'])), true);
+    t.equals(r.matches(craftingGrid2([void 0, 'plank', void 0, 'plank'])), true);
+    t.equals(r.matches(craftingGrid2([void 0, 'plank', void 0])), false);
     return t.end();
   });
 

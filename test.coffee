@@ -57,7 +57,10 @@ test 'amorphous double ingredients', (t) ->
   t.equals(r.matches(craftingGrid2 ['plank']), false)
   t.equals(r.matches(craftingGrid2 ['plank', 'plank']), true)
   t.equals(r.matches(craftingGrid2 [undefined,'plank', 'plank']), true)
-  t.equals(r.matches(craftingGrid2 [undefined, undefined,'plank', 'plank']), true)
+  t.equals(r.matches(craftingGrid2 [undefined, undefined, 'plank', 'plank']), true)
+  t.equals(r.matches(craftingGrid2 ['plank', undefined, 'plank']), true)
+  t.equals(r.matches(craftingGrid2 [undefined, 'plank', undefined, 'plank']), true)
+  t.equals(r.matches(craftingGrid2 [undefined, 'plank', undefined]), false)
   t.end()
 
 test 'amorphous extraneous inputs', (t) ->

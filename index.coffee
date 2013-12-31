@@ -87,12 +87,10 @@ class PositionalRecipe extends Recipe
         actualPile = inventory.get(index)
 
         if not CraftingThesaurus.instance.matchesName(expectedName, actualPile)
-          console.log 'fail match',expectedName,actualPile
           return undefined
 
         foundIndices.push(index)
 
-    console.log 'foundIndices=',foundIndices
     return foundIndices
 
   computeOutput: (inventory) ->
