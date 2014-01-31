@@ -111,7 +111,6 @@ class PositionalRecipe extends Recipe
 class RecipeList
   constructor: () ->
     @recipes = []
-    @thesaurus = new CraftingThesaurus()
 
   register: (recipe) ->
     @recipes.push(recipe)
@@ -128,7 +127,7 @@ class RecipeList
     return undefined
 
 module.exports = (game, opts) ->
-  return new RecipeList()
+  throw new Error 'craftingrecipes plugin (plugin only) replaced by voxel-recipes'
 
 module.exports.Recipe = Recipe
 module.exports.AmorphousRecipe = AmorphousRecipe

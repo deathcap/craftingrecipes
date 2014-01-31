@@ -181,7 +181,6 @@
   RecipeList = (function() {
     function RecipeList() {
       this.recipes = [];
-      this.thesaurus = new CraftingThesaurus();
     }
 
     RecipeList.prototype.register = function(recipe) {
@@ -218,7 +217,7 @@
   })();
 
   module.exports = function(game, opts) {
-    return new RecipeList();
+    throw new Error('craftingrecipes plugin (plugin only) replaced by voxel-recipes');
   };
 
   module.exports.Recipe = Recipe;
