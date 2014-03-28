@@ -209,4 +209,39 @@
     return t.end();
   });
 
+  test('tighten grid', function(t) {
+    var checkTight;
+    checkTight = function(t, grid, width, height, s) {
+      var actual, expected, sm;
+      sm = PositionalRecipe.tighten(craftingGrid3(grid));
+      t.equal(sm.width, width);
+      t.equal(sm.height, height);
+      actual = sm.toString();
+      expected = s.replace(/[, ]/g, '\t');
+      return t.equal(actual, expected);
+    };
+    checkTight(t, ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'], 3, 3, '1:a,1:b,1:c 1:d,1:e,1:f 1:g,1:h,1:i');
+    checkTight(t, [void 0, void 0, void 0, 'd', 'e', 'f', 'g', 'h', 'i'], 3, 2, '1:d,1:e,1:f 1:g,1:h,1:i');
+    checkTight(t, [void 0, void 0, void 0, void 0, void 0, void 0, 'g', 'h', 'i'], 3, 1, '1:g,1:h,1:i');
+    checkTight(t, [void 0, void 0, void 0, void 0, void 0, 'f', 'g', 'h', 'i'], 3, 2, ',,1:f 1:g,1:h,1:i');
+    checkTight(t, [void 0, void 0, void 0, void 0, void 0, 'f', void 0, 'h', 'i'], 2, 2, ',1:f 1:h,1:i');
+    checkTight(t, [void 0, void 0, void 0, void 0, 'e', void 0, void 0, void 0, void 0], 1, 1, '1:e');
+    return t.end();
+  });
+
+  test('positional recipe size < grid size', function(t) {
+    var r;
+    r = new PositionalRecipe([[void 0, 'ingot'], ['ingot', void 0]], new ItemPile('shears'));
+    t.equal(r.matches(craftingGrid2([void 0, 'ingot', 'ingot', void 0])), true);
+    t.equal(r.matches(craftingGrid2([void 0, void 0, 'ingot', void 0])), false);
+    t.equal(r.matches(craftingGrid2([void 0, 'ingot', void 0, void 0])), false);
+    t.equal(r.matches(craftingGrid2([void 0, void 0, void 0, void 0])), false);
+    t.equal(r.matches(craftingGrid2(['ingot', 'ingot', 'ingot', 'ingot'])), false);
+    t.equal(r.matches(craftingGrid3([void 0, 'ingot', void 0, 'ingot', void 0, void 0, void 0, void 0, void 0])), true);
+    t.equal(r.matches(craftingGrid3([void 0, void 0, 'ingot', void 0, 'ingot', void 0, void 0, void 0, void 0])), true);
+    t.equal(r.matches(craftingGrid3([void 0, void 0, void 0, void 0, 'ingot', void 0, 'ingot', void 0, void 0])), true);
+    t.equal(r.matches(craftingGrid3([void 0, void 0, void 0, void 0, void 0, 'ingot', void 0, 'ingot', void 0])), true);
+    return t.end();
+  });
+
 }).call(this);

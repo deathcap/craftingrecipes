@@ -1,4 +1,5 @@
-# vim: set shiftwidth=2 tabstop=2 softtabstop=2 expandtab:
+
+Inventory = require 'inventory'
 
 class CraftingThesaurus
   @instance = undefined
@@ -73,14 +74,14 @@ class AmorphousRecipe extends Recipe
 
     return @output.clone()
 
-
 class PositionalRecipe extends Recipe
   # TODO: accept patternStrArray, ingredientMap (['AB''], {A:.., B:..})
   constructor: (@ingredientMatrix, @output) ->
 
-  findMatchingSlots: (inventory) ->
+  findMatchingSlots: (inputInventory) ->
     # inventory input ingredients must match @ingredientMatrix at same positions
     foundIndices = []
+    inventory = PositionalRecipe.tighten inputInventory
     for row, i in @ingredientMatrix
       for expectedName, j in row
         index = j + i * inventory.width
@@ -92,6 +93,56 @@ class PositionalRecipe extends Recipe
         foundIndices.push(index)
 
     return foundIndices
+
+  # tighten the bounds around an inventory, shrinking it from the edges if possible
+  @tighten = (inventory) ->
+    # iterate from each side, computing occupied bounds
+    for x in [0...inventory.width]
+      isOccupied = false
+      for y in [0...inventory.height]
+        isOccupied = true if inventory.get(y + x * inventory.width)?
+      break if isOccupied
+    firstRow = x
+
+    for x in [inventory.width - 1..0]
+      isOccupied = false
+      for y in [0...inventory.height]
+        isOccupied = true if inventory.get(y + x * inventory.width)?
+      break if isOccupied
+    lastRow = x
+
+
+    for y in [0...inventory.height]
+      isOccupied = false
+      for x in [0...inventory.width]
+        isOccupied = true if inventory.get(y + x * inventory.width)?
+      break if isOccupied
+    firstColumn = y
+
+    for y in [inventory.height - 1..0]
+      isOccupied = false
+      for x in [0...inventory.width]
+        isOccupied = true if inventory.get(y + x * inventory.width)?
+      break if isOccupied
+    lastColumn = y
+
+    #console.log 'firstRow',firstRow,'lastRow',lastRow
+    #console.log 'firstColumn',firstColumn,'lastColumn',lastColumn
+
+    # copy to new smaller-or-equal inventory
+    newWidth = lastColumn - firstColumn + 1
+    newHeight = lastRow - firstRow + 1
+
+    #console.log 'new ',newWidth,newHeight
+    newInventory = new Inventory(newWidth, newHeight)
+    for oldX in [firstRow..lastRow]
+      for oldY in [firstColumn..lastColumn]
+        pile = inventory.get(oldY + oldX * inventory.width)
+        newX = oldX - firstRow
+        newY = oldY - firstColumn
+        newInventory.set newY + newX * newInventory.width, pile
+
+    return newInventory
 
   computeOutput: (inventory) ->
     return @output.clone() if @findMatchingSlots(inventory) != undefined

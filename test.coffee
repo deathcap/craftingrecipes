@@ -216,3 +216,121 @@ test 'positional recipe three rows', (t) ->
 
   t.end()
 
+test 'tighten grid', (t) ->
+  checkTight = (t, grid, width, height, s) ->
+    sm = PositionalRecipe.tighten(craftingGrid3(grid))
+
+    t.equal(sm.width, width)
+    t.equal(sm.height, height)
+
+    actual = sm.toString()
+    expected = s.replace(/[, ]/g, '\t')
+
+    t.equal(actual, expected)
+
+  # no change (3x3->3x3)
+  checkTight t, [
+    'a', 'b', 'c',
+    'd', 'e', 'f',
+    'g', 'h', 'i'],
+    3, 3, '
+    1:a,1:b,1:c
+    1:d,1:e,1:f
+    1:g,1:h,1:i'
+
+  # first row removed (3x3->3x2)
+  checkTight t, [
+    undefined, undefined, undefined,
+    'd', 'e', 'f'
+    'g', 'h', 'i'],
+     3, 2, '
+     1:d,1:e,1:f
+     1:g,1:h,1:i'
+
+  # first two (3x3->3x1)
+  checkTight t, [
+    undefined, undefined, undefined,
+    undefined, undefined, undefined,
+    'g', 'h', 'i'],
+    3, 1, '
+    1:g,1:h,1:i'
+
+  # only first row, partially filled 2nd row (3x3->3x2)
+  checkTight t, [
+    undefined, undefined, undefined,
+    undefined, undefined, 'f',
+    'g', 'h', 'i'],
+    3, 2, '
+    ,,1:f
+    1:g,1:h,1:i'
+
+  # first row and column (3x3->2x2)
+  checkTight t, [
+    undefined, undefined, undefined,
+    undefined, undefined, 'f',
+    undefined, 'h', 'i'],
+    2, 2, '
+    ,1:f
+    1:h,1:i'
+
+  # 3x3->1x1
+  checkTight t, [
+    undefined, undefined, undefined,
+    undefined, 'e', undefined,
+    undefined, undefined, undefined],
+    1, 1, '
+    1:e'
+
+  t.end()
+
+test 'positional recipe size < grid size', (t) ->
+  r = new PositionalRecipe [
+    [undefined, 'ingot'],
+    ['ingot', undefined]], new ItemPile('shears')
+
+  # same size
+  t.equal(r.matches(craftingGrid2 [
+    undefined, 'ingot',
+    'ingot', undefined]), true)
+
+  t.equal(r.matches(craftingGrid2 [
+    undefined, undefined,
+    'ingot', undefined]), false)
+  t.equal(r.matches(craftingGrid2 [
+    undefined, 'ingot',
+    undefined, undefined]), false)
+  t.equal(r.matches(craftingGrid2 [
+    undefined, undefined,
+    undefined, undefined]), false)
+  t.equal(r.matches(craftingGrid2 [
+    'ingot', 'ingot',
+    'ingot', 'ingot']), false)
+
+
+  # upper-left
+  t.equal(r.matches(craftingGrid3 [
+    undefined, 'ingot', undefined,
+    'ingot', undefined, undefined,
+    undefined, undefined, undefined]), true)
+
+  # upper-right
+  t.equal(r.matches(craftingGrid3 [
+    undefined, undefined, 'ingot',
+    undefined, 'ingot', undefined,
+    undefined, undefined, undefined]), true)
+
+  # lower-left
+  t.equal(r.matches(craftingGrid3 [
+    undefined, undefined, undefined,
+    undefined, 'ingot', undefined,
+    'ingot', undefined, undefined]), true)
+
+  # lower-right
+  t.equal(r.matches(craftingGrid3 [
+    undefined, undefined, undefined,
+    undefined, undefined, 'ingot',
+    undefined, 'ingot', undefined]), true)
+
+  t.end()
+
+
