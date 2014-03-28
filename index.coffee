@@ -79,7 +79,10 @@ class PositionalRecipe extends Recipe
   findMatchingSlots: (inputInventory) ->
     # inventory input ingredients must match @ingredientMatrix at same (relative) positions
     foundIndices = []
+
     [inventory, shiftRow, shiftColumn] = PositionalRecipe.tighten inputInventory
+    if inventory.height != @ingredientMatrix.length or inventory.width != @ingredientMatrix[0].length
+      return undefined
 
     for row, i in @ingredientMatrix
       for expectedName, j in row

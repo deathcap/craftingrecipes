@@ -139,6 +139,9 @@
       var actualPile, expectedName, foundIndices, i, index, inventory, j, row, shiftColumn, shiftRow, unshiftedIndex, _i, _j, _len, _len1, _ref, _ref1;
       foundIndices = [];
       _ref = PositionalRecipe.tighten(inputInventory), inventory = _ref[0], shiftRow = _ref[1], shiftColumn = _ref[2];
+      if (inventory.height !== this.ingredientMatrix.length || inventory.width !== this.ingredientMatrix[0].length) {
+        return void 0;
+      }
       _ref1 = this.ingredientMatrix;
       for (i = _i = 0, _len = _ref1.length; _i < _len; i = ++_i) {
         row = _ref1[i];

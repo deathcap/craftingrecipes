@@ -371,9 +371,35 @@ test 'positional recipe 1x3 < grid size', (t) ->
     undefined, undefined, 'stick',
     undefined, undefined, 'stick']), true)
 
+  # extra items, should be excluded by larger dimensions
+  t.equal(r.matches(craftingGrid3 [
+    'ingot', 'ingot', undefined,
+    'stick', 'ingot', undefined,
+    'stick', undefined, undefined]), false)  # matches r2 below
+
   t.equal(r.matches(craftingGrid3 [
     'ingot', 'junk', undefined,
     'stick', undefined, undefined,
     'stick', undefined, undefined]), false)
+
+  t.equal(r.matches(craftingGrid3 [
+    'ingot', 'junk', 'morejunk',
+    'stick', undefined, undefined,
+    'stick', undefined, undefined]), false)
+
+  t.equal(r.matches(craftingGrid3 [
+    'junk1', 'ingot', 'junk2',
+    undefined, 'stick', undefined,
+    undefined, 'stick', undefined]), false)
+
+
+  r2 = new PositionalRecipe [
+    ['ingot', 'ingot']
+    ['stick', 'ingot'],
+    ['stick', undefined]], new ItemPile('axe')
+  t.equal(r2.matches(craftingGrid3 [
+    'ingot', 'ingot', undefined,
+    'stick', 'ingot', undefined,
+    'stick', undefined, undefined]), true)
 
   t.end()

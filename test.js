@@ -247,12 +247,17 @@
   });
 
   test('positional recipe 1x3 < grid size', function(t) {
-    var r;
+    var r, r2;
     r = new PositionalRecipe([['ingot'], ['stick'], ['stick']], new ItemPile('spade'));
     t.equal(r.matches(craftingGrid3(['ingot', void 0, void 0, 'stick', void 0, void 0, 'stick', void 0, void 0])), true);
     t.equal(r.matches(craftingGrid3([void 0, 'ingot', void 0, void 0, 'stick', void 0, void 0, 'stick', void 0])), true);
     t.equal(r.matches(craftingGrid3([void 0, void 0, 'ingot', void 0, void 0, 'stick', void 0, void 0, 'stick'])), true);
+    t.equal(r.matches(craftingGrid3(['ingot', 'ingot', void 0, 'stick', 'ingot', void 0, 'stick', void 0, void 0])), false);
     t.equal(r.matches(craftingGrid3(['ingot', 'junk', void 0, 'stick', void 0, void 0, 'stick', void 0, void 0])), false);
+    t.equal(r.matches(craftingGrid3(['ingot', 'junk', 'morejunk', 'stick', void 0, void 0, 'stick', void 0, void 0])), false);
+    t.equal(r.matches(craftingGrid3(['junk1', 'ingot', 'junk2', void 0, 'stick', void 0, void 0, 'stick', void 0])), false);
+    r2 = new PositionalRecipe([['ingot', 'ingot'], ['stick', 'ingot'], ['stick', void 0]], new ItemPile('axe'));
+    t.equal(r2.matches(craftingGrid3(['ingot', 'ingot', void 0, 'stick', 'ingot', void 0, 'stick', void 0, void 0])), true);
     return t.end();
   });
 
