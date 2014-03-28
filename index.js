@@ -136,12 +136,12 @@
     }
 
     PositionalRecipe.prototype.findMatchingSlots = function(inputInventory) {
-      var actualPile, expectedName, foundIndices, i, index, inventory, j, row, _i, _j, _len, _len1, _ref;
+      var actualPile, expectedName, foundIndices, i, index, inventory, j, row, shiftColumn, shiftRow, unshiftedIndex, _i, _j, _len, _len1, _ref, _ref1;
       foundIndices = [];
-      inventory = PositionalRecipe.tighten(inputInventory);
-      _ref = this.ingredientMatrix;
-      for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
-        row = _ref[i];
+      _ref = PositionalRecipe.tighten(inputInventory), inventory = _ref[0], shiftRow = _ref[1], shiftColumn = _ref[2];
+      _ref1 = this.ingredientMatrix;
+      for (i = _i = 0, _len = _ref1.length; _i < _len; i = ++_i) {
+        row = _ref1[i];
         for (j = _j = 0, _len1 = row.length; _j < _len1; j = ++_j) {
           expectedName = row[j];
           index = j + i * inventory.width;
@@ -149,7 +149,8 @@
           if (!CraftingThesaurus.instance.matchesName(expectedName, actualPile)) {
             return void 0;
           }
-          foundIndices.push(index);
+          unshiftedIndex = (j + shiftColumn) + (i + shiftRow) * inputInventory.width;
+          foundIndices.push(unshiftedIndex);
         }
       }
       return foundIndices;
@@ -216,7 +217,7 @@
           newInventory.set(newY + newX * newInventory.width, pile);
         }
       }
-      return newInventory;
+      return [newInventory, firstRow, firstColumn];
     };
 
     PositionalRecipe.prototype.computeOutput = function(inventory) {

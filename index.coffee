@@ -77,9 +77,10 @@ class PositionalRecipe extends Recipe
   constructor: (@ingredientMatrix, @output) ->
 
   findMatchingSlots: (inputInventory) ->
-    # inventory input ingredients must match @ingredientMatrix at same positions
+    # inventory input ingredients must match @ingredientMatrix at same (relative) positions
     foundIndices = []
-    inventory = PositionalRecipe.tighten inputInventory
+    [inventory, shiftRow, shiftColumn] = PositionalRecipe.tighten inputInventory
+
     for row, i in @ingredientMatrix
       for expectedName, j in row
         index = j + i * inventory.width
@@ -88,7 +89,9 @@ class PositionalRecipe extends Recipe
         if not CraftingThesaurus.instance.matchesName(expectedName, actualPile)
           return undefined
 
-        foundIndices.push(index)
+        # add original index from inputInventory for removing ingredients
+        unshiftedIndex = (j + shiftColumn) + (i + shiftRow) * inputInventory.width
+        foundIndices.push(unshiftedIndex)
 
     return foundIndices
 
@@ -140,7 +143,7 @@ class PositionalRecipe extends Recipe
         newY = oldY - firstColumn
         newInventory.set newY + newX * newInventory.width, pile
 
-    return newInventory
+    return [newInventory, firstRow, firstColumn]
 
   computeOutput: (inventory) ->
     return @output.clone() if @findMatchingSlots(inventory) != undefined
