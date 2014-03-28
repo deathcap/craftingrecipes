@@ -273,6 +273,15 @@ test 'tighten grid', (t) ->
     ,1:f
     1:h,1:i'
 
+  checkTight t, [
+    'a', 'b', undefined,
+    'd', undefined, undefined,
+    'g', undefined, undefined],
+    2, 3, '
+    1:a,1:b
+    1:d,
+    1:g,'
+
   # 3x3->1x1
   checkTight t, [
     undefined, undefined, undefined,
@@ -283,7 +292,7 @@ test 'tighten grid', (t) ->
 
   t.end()
 
-test 'positional recipe size < grid size', (t) ->
+test 'positional recipe size 2x2 < grid size', (t) ->
   r = new PositionalRecipe [
     [undefined, 'ingot'],
     ['ingot', undefined]], new ItemPile('shears')
@@ -333,4 +342,30 @@ test 'positional recipe size < grid size', (t) ->
 
   t.end()
 
+test 'positional recipe 1x3 < grid size', (t) ->
+  r = new PositionalRecipe [
+    ['ingot'],
+    ['stick']
+    ['stick']], new ItemPile('spade')
 
+  t.equal(r.matches(craftingGrid3 [
+    'ingot', undefined, undefined,
+    'stick', undefined, undefined,
+    'stick', undefined, undefined]), true)
+
+  t.equal(r.matches(craftingGrid3 [
+    undefined, 'ingot', undefined,
+    undefined, 'stick', undefined,
+    undefined, 'stick', undefined]), true)
+
+  t.equal(r.matches(craftingGrid3 [
+    undefined, undefined, 'ingot',
+    undefined, undefined, 'stick',
+    undefined, undefined, 'stick']), true)
+
+  t.equal(r.matches(craftingGrid3 [
+    'ingot', 'junk', undefined,
+    'stick', undefined, undefined,
+    'stick', undefined, undefined]), false)
+
+  t.end()

@@ -225,11 +225,12 @@
     checkTight(t, [void 0, void 0, void 0, void 0, void 0, void 0, 'g', 'h', 'i'], 3, 1, '1:g,1:h,1:i');
     checkTight(t, [void 0, void 0, void 0, void 0, void 0, 'f', 'g', 'h', 'i'], 3, 2, ',,1:f 1:g,1:h,1:i');
     checkTight(t, [void 0, void 0, void 0, void 0, void 0, 'f', void 0, 'h', 'i'], 2, 2, ',1:f 1:h,1:i');
+    checkTight(t, ['a', 'b', void 0, 'd', void 0, void 0, 'g', void 0, void 0], 2, 3, '1:a,1:b 1:d, 1:g,');
     checkTight(t, [void 0, void 0, void 0, void 0, 'e', void 0, void 0, void 0, void 0], 1, 1, '1:e');
     return t.end();
   });
 
-  test('positional recipe size < grid size', function(t) {
+  test('positional recipe size 2x2 < grid size', function(t) {
     var r;
     r = new PositionalRecipe([[void 0, 'ingot'], ['ingot', void 0]], new ItemPile('shears'));
     t.equal(r.matches(craftingGrid2([void 0, 'ingot', 'ingot', void 0])), true);
@@ -241,6 +242,16 @@
     t.equal(r.matches(craftingGrid3([void 0, void 0, 'ingot', void 0, 'ingot', void 0, void 0, void 0, void 0])), true);
     t.equal(r.matches(craftingGrid3([void 0, void 0, void 0, void 0, 'ingot', void 0, 'ingot', void 0, void 0])), true);
     t.equal(r.matches(craftingGrid3([void 0, void 0, void 0, void 0, void 0, 'ingot', void 0, 'ingot', void 0])), true);
+    return t.end();
+  });
+
+  test('positional recipe 1x3 < grid size', function(t) {
+    var r;
+    r = new PositionalRecipe([['ingot'], ['stick'], ['stick']], new ItemPile('spade'));
+    t.equal(r.matches(craftingGrid3(['ingot', void 0, void 0, 'stick', void 0, void 0, 'stick', void 0, void 0])), true);
+    t.equal(r.matches(craftingGrid3([void 0, 'ingot', void 0, void 0, 'stick', void 0, void 0, 'stick', void 0])), true);
+    t.equal(r.matches(craftingGrid3([void 0, void 0, 'ingot', void 0, void 0, 'stick', void 0, void 0, 'stick'])), true);
+    t.equal(r.matches(craftingGrid3(['ingot', 'junk', void 0, 'stick', void 0, void 0, 'stick', void 0, void 0])), false);
     return t.end();
   });
 
