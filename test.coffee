@@ -290,6 +290,14 @@ test 'tighten grid', (t) ->
     1, 1, '
     1:e'
 
+  checkTight t, [
+    undefined, undefined, undefined,
+    undefined, undefined, undefined,
+    undefined, undefined, undefined],
+    1, 1, '
+    '
+
+
   t.end()
 
 test 'positional recipe size 2x2 < grid size', (t) ->

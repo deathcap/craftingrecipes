@@ -227,6 +227,7 @@
     checkTight(t, [void 0, void 0, void 0, void 0, void 0, 'f', void 0, 'h', 'i'], 2, 2, ',1:f 1:h,1:i');
     checkTight(t, ['a', 'b', void 0, 'd', void 0, void 0, 'g', void 0, void 0], 2, 3, '1:a,1:b 1:d, 1:g,');
     checkTight(t, [void 0, void 0, void 0, void 0, 'e', void 0, void 0, void 0, void 0], 1, 1, '1:e');
+    checkTight(t, [void 0, void 0, void 0, void 0, void 0, void 0, void 0, void 0, void 0], 1, 1, '');
     return t.end();
   });
 

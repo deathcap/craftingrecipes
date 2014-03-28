@@ -208,6 +208,9 @@
       lastColumn = y;
       newWidth = lastColumn - firstColumn + 1;
       newHeight = lastRow - firstRow + 1;
+      if (newWidth < 0 || newHeight < 0) {
+        newWidth = newHeight = 1;
+      }
       newInventory = new inventory.constructor(newWidth, newHeight);
       for (oldX = _q = firstRow; firstRow <= lastRow ? _q <= lastRow : _q >= lastRow; oldX = firstRow <= lastRow ? ++_q : --_q) {
         for (oldY = _r = firstColumn; firstColumn <= lastColumn ? _r <= lastColumn : _r >= lastColumn; oldY = firstColumn <= lastColumn ? ++_r : --_r) {

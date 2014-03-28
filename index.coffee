@@ -134,6 +134,11 @@ class PositionalRecipe extends Recipe
     newWidth = lastColumn - firstColumn + 1
     newHeight = lastRow - firstRow + 1
 
+    if newWidth < 0 or newHeight < 0
+      # completely empty inventory - but cannot shrink to 0x0 (dimensions must be
+      # positive in inventory >=0.1.2), so go with the next best thing (1x1)
+      newWidth = newHeight = 1
+
     #console.log 'new ',newWidth,newHeight
     newInventory = new inventory.constructor(newWidth, newHeight)
     for oldX in [firstRow..lastRow]
