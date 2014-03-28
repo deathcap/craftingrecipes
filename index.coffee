@@ -1,6 +1,4 @@
 
-Inventory = require 'inventory'
-
 class CraftingThesaurus
   @instance = undefined
 
@@ -134,7 +132,7 @@ class PositionalRecipe extends Recipe
     newHeight = lastRow - firstRow + 1
 
     #console.log 'new ',newWidth,newHeight
-    newInventory = new Inventory(newWidth, newHeight)
+    newInventory = new inventory.constructor(newWidth, newHeight)
     for oldX in [firstRow..lastRow]
       for oldY in [firstColumn..lastColumn]
         pile = inventory.get(oldY + oldX * inventory.width)
