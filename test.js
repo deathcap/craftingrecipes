@@ -212,8 +212,8 @@
   test('tighten grid', function(t) {
     var checkTight;
     checkTight = function(t, grid, width, height, s) {
-      var actual, expected, sm;
-      sm = PositionalRecipe.tighten(craftingGrid3(grid));
+      var actual, expected, firstColumn, firstRow, sm, _ref1;
+      _ref1 = PositionalRecipe.tighten(craftingGrid3(grid)), sm = _ref1[0], firstRow = _ref1[1], firstColumn = _ref1[2];
       t.equal(sm.width, width);
       t.equal(sm.height, height);
       actual = sm.toString();

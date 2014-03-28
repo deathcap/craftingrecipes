@@ -218,7 +218,7 @@ test 'positional recipe three rows', (t) ->
 
 test 'tighten grid', (t) ->
   checkTight = (t, grid, width, height, s) ->
-    sm = PositionalRecipe.tighten(craftingGrid3(grid))
+    [sm, firstRow, firstColumn] = PositionalRecipe.tighten(craftingGrid3(grid))
 
     t.equal(sm.width, width)
     t.equal(sm.height, height)
