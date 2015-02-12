@@ -2,7 +2,7 @@
   "name": "craftingrecipes",
   "description": "recipes for crafting items with inventory and itempile",
   "version": "0.3.0",
-  "main": "index.coffee",
+  "main": "craftingrecipes.coffee",
   "repository": {
     "type": "git",
     "url": "git@github.com:deathcap/craftingrecipes.git"
