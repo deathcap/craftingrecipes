@@ -1,6 +1,6 @@
 {
   "name": "craftingrecipes",
-  "description": "",
+  "description": "recipes for crafting items with inventory and itempile",
   "version": "0.3.0",
   "repository": {
     "type": "git",
