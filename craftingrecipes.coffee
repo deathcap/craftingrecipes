@@ -1,10 +1,8 @@
 
 class CraftingThesaurus
-  @instance = undefined
-
   constructor: () ->
     @map = {}
-    CraftingThesaurus.instance = this # TODO: desingletonify?
+    global.CraftingThesaurus_instance = this # TODO: desingletonify?
 
   registerName: (lookupName, item) ->
     throw "craftingrecipes registerName(#{lookupName}): name is in invalid format, should be 'shape.material'" if lookupName.indexOf('.') == -1
@@ -33,7 +31,7 @@ class AmorphousRecipe extends Recipe
   # if itemPile is in pendingIngredients, remove it
   removeIngredient: (itemPile, pendingIngredients) ->
     for testIngredient, i in pendingIngredients
-      if CraftingThesaurus.instance.matchesName(testIngredient, itemPile)
+      if global.CraftingThesaurus_instance.matchesName(testIngredient, itemPile)
         pendingIngredients.splice(i, 1)
         return true
     return false
@@ -89,7 +87,7 @@ class PositionalRecipe extends Recipe
         index = j + i * inventory.width
         actualPile = inventory.get(index)
 
-        if not CraftingThesaurus.instance.matchesName(expectedName, actualPile)
+        if not global.CraftingThesaurus_instance.matchesName(expectedName, actualPile)
           return undefined
 
         # add original index from inputInventory for removing ingredients
