@@ -16,8 +16,8 @@
     "recipes"
   ],
   "dependencies": {
-    "itempile": "^1.0.1",
-    "inventory": "^1.0.0",
+    "itempile": "^2.0.0",
+    "inventory": "^2.0.0",
     "coffeeify": "^1.0.0"
   },
   "devDependencies": {
@@ -25,7 +25,7 @@
     "tape": "2.3.0"
   },
   "scripts": {
-    "test": "browserify test.coffee | node"
+    "test": "coffee test.coffee"
   },
   "browserify": {
     "transform": [
