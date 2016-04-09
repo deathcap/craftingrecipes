@@ -36,6 +36,7 @@ class Recipe {
   }
 
   matches(inventory) {
+    console.log('matches?',inventory);
     return this.computeOutput(inventory) !== undefined;
   }
 
@@ -58,6 +59,7 @@ class AmorphousRecipe extends Recipe {
 
       if (global.CraftingThesaurus_instance.matchesName(testIngredient, itemPile)) {
         pendingIngredients.splice(i, 1);
+        console.log('matchesName',testIngredient,itemPile);
         return true;
       }
     }
@@ -73,7 +75,9 @@ class AmorphousRecipe extends Recipe {
       const itemPile = inventory.get(i)
       if (itemPile === undefined) continue;
 
+      console.log('findMatchingSlots',itemPile,pendingIngredients);
       if (!this.removeIngredient(itemPile, pendingIngredients)) {
+        console.log('FOUND SOMETHING WE DIDNT WANT!');
         // found something we didn't want
         return undefined;
       }
@@ -117,6 +121,7 @@ class PositionalRecipe extends Recipe {
   }
 
   findMatchingSlots(inputInventory) {
+    console.log('findMatchingSlots',inputInventory);
     // inventory input ingredients must match this.ingredientMatrix at same (relative) positions
     const foundIndices = [];
 
@@ -126,6 +131,10 @@ class PositionalRecipe extends Recipe {
     const shiftColumn = a[2];
 
     if (inventory.height !== this.ingredientMatrix.length || inventory.width !== this.ingredientMatrix[0].length) {
+      console.log('fms wrong dimensions',
+          inventory.height, this.ingredientMatrix.length,
+          inventory.width, this.ingredientMatrix[0].length,
+          inventory, this.ingredientMatrix);
       return undefined;
     }
 
@@ -139,6 +148,7 @@ class PositionalRecipe extends Recipe {
         const actualPile = inventory.get(index);
 
         if (!global.CraftingThesaurus_instance.matchesName(expectedName, actualPile)) {
+          console.log('fms not matching',expectedName,actualPile);
           return undefined;
         }
 
@@ -148,6 +158,7 @@ class PositionalRecipe extends Recipe {
       }
     }
 
+    console.log('fms foundIndices',foundIndices);
     return foundIndices;
   }
 
@@ -168,7 +179,7 @@ class PositionalRecipe extends Recipe {
 
     const firstRow = x;
 
-    for (x = inventory.width - 1; x > 0; --x) {
+    for (x = inventory.width - 1; x >= 0; --x) {
       let isOccupied = false;
       for (let y = 0; y <= inventory.height; ++y) {
         if (inventory.get(y + x * inventory.width) !== undefined) {
@@ -193,7 +204,7 @@ class PositionalRecipe extends Recipe {
 
     const firstColumn = y;
 
-    for (let y = inventory.height - 1; y > 0; --y) {
+    for (let y = inventory.height - 1; y >= 0; --y) {
       let isOccupied = false;
       for (let x = 0; x <= inventory.width; ++x) {
         if (inventory.get(y + x * inventory.width) !== undefined) {
@@ -232,6 +243,7 @@ class PositionalRecipe extends Recipe {
   }
 
   computeOutput(inventory) {
+    console.log('computeOutput',inventory);
     if (this.findMatchingSlots(inventory) !== undefined) {
       return this.output.clone();
     }
