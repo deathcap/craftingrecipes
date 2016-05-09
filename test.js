@@ -246,7 +246,7 @@ test('tighten grid', (t) => {
     t.equal(sm.height, height)
 
     const actual = sm.toString()
-    const expected = s.replace(/[, ]/g, '\t')
+    const expected = s.replace(/[ \n\t]+/g, '\t').replace(/,/g, '\t')
 
     return t.equal(actual, expected)
   }
@@ -256,69 +256,61 @@ test('tighten grid', (t) => {
     'a', 'b', 'c',
     'd', 'e', 'f',
     'g', 'h', 'i'],
-    3, 3, `
-    1:a,1:b,1:c
-    1:d,1:e,1:f
-    1:g,1:h,1:i`)
+    3, 3, `1:a,1:b,1:c
+           1:d,1:e,1:f
+           1:g,1:h,1:i`)
 
   // first row removed (3x3=> {3x2)
   checkTight(t, [
     undefined, undefined, undefined,
     'd', 'e', 'f',
     'g', 'h', 'i'],
-     3, 2, `
-     1:d,1:e,1:f
-     1:g,1:h,1:i`)
+     3, 2, `1:d,1:e,1:f
+            1:g,1:h,1:i`)
 
   // first two (3x3=> {3x1)
   checkTight(t, [
     undefined, undefined, undefined,
     undefined, undefined, undefined,
     'g', 'h', 'i'],
-    3, 1, `
-    1:g,1:h,1:i`)
+    3, 1, `1:g,1:h,1:i`)
 
   // only first row, partially filled 2nd row (3x3=> {3x2)
   checkTight(t, [
     undefined, undefined, undefined,
     undefined, undefined, 'f',
     'g', 'h', 'i'],
-    3, 2, `
-    ,,1:f
-    1:g,1:h,1:i`)
+    3, 2, `,,1:f
+           1:g,1:h,1:i`)
 
   // first row and column (3x3=> {2x2)
   checkTight(t, [
     undefined, undefined, undefined,
     undefined, undefined, 'f',
     undefined, 'h', 'i'],
-    2, 2, `
-    ,1:f
-    1:h,1:i`)
+    2, 2, `,1:f
+           1:h,1:i`)
 
   checkTight(t, [
     'a', 'b', undefined,
     'd', undefined, undefined,
     'g', undefined, undefined],
-    2, 3, `
-    1:a,1:b
-    1:d,
-    1:g,`)
+    2, 3, `1:a,1:b
+           1:d,
+           1:g,`)
 
   // 3x3=> {1x1
   checkTight(t, [
     undefined, undefined, undefined,
     undefined, 'e', undefined,
     undefined, undefined, undefined],
-    1, 1, `
-    1:e`)
+    1, 1, `1:e`)
 
   checkTight(t, [
     undefined, undefined, undefined,
     undefined, undefined, undefined,
     undefined, undefined, undefined],
-    1, 1, `
-    `)
+    1, 1, ``)
 
 
   t.end()
