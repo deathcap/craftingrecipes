@@ -204,7 +204,7 @@ class PositionalRecipe extends Recipe {
 
     const firstColumn = y;
 
-    for (let y = inventory.height - 1; y >= 0; --y) {
+    for (y = inventory.height - 1; y >= 0; --y) {
       let isOccupied = false;
       for (let x = 0; x < inventory.width; ++x) {
         if (inventory.get(y + x * inventory.width) !== undefined) {
