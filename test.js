@@ -370,7 +370,7 @@ test('positional recipe size 2x2 < grid size', (t) => {
 test('positional recipe 1x3 < grid size', (t) => {
   const r = new PositionalRecipe([
     ['ingot'],
-    ['stick']
+    ['stick'],
     ['stick']], new ItemPile('spade'))
 
   t.equal(r.matches(craftingGrid3([
