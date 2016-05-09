@@ -2,7 +2,7 @@
   "name": "craftingrecipes",
   "description": "recipes for crafting items with inventory and itempile",
   "version": "1.0.0",
-  "main": "craftingrecipes.coffee",
+  "main": "craftingrecipes.js",
   "repository": {
     "type": "git",
     "url": "git@github.com:deathcap/craftingrecipes.git"
@@ -16,21 +16,18 @@
     "recipes"
   ],
   "dependencies": {
-    "itempile": "^1.0.1",
-    "inventory": "^1.0.0",
-    "coffeeify": "^1.0.0"
+    "itempile": "^2.0.0",
+    "inventory": "^2.0.0"
   },
   "devDependencies": {
     "browserify": "^8.1.3",
     "tape": "2.3.0"
   },
   "scripts": {
-    "test": "browserify test.coffee | node"
+    "test": "node test.js"
   },
-  "browserify": {
-    "transform": [
-      "coffeeify"
-    ]
-  },
+  "engines": [
+    "node >=6"
+  ],
   "license": "MIT"
 }
