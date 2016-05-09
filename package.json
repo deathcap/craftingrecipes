@@ -26,5 +26,8 @@
   "scripts": {
     "test": "node test.js"
   },
+  "engines": [
+    "node >=6"
+  ],
   "license": "MIT"
 }
