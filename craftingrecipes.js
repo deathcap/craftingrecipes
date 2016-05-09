@@ -230,8 +230,8 @@ class PositionalRecipe extends Recipe {
 
     //console.log('new ',newWidth,newHeight);
     const newInventory = new inventory.constructor(newWidth, newHeight);
-    for (let oldX = firstRow; oldX < lastRow; ++oldX) {
-      for (let oldY = firstColumn; oldY < lastColumn; ++oldY) {
+    for (let oldX = firstRow; oldX <= lastRow; ++oldX) {
+      for (let oldY = firstColumn; oldY <= lastColumn; ++oldY) {
         const pile = inventory.get(oldY + oldX * inventory.width);
         const newX = oldX - firstRow;
         const newY = oldY - firstColumn;
