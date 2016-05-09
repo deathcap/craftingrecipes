@@ -166,9 +166,9 @@ class PositionalRecipe extends Recipe {
   static tighten(inventory) {
     // iterate from each side, computing occupied bounds
     let x;
-    for (x = 0; x <= inventory.width; ++x) {
+    for (x = 0; x < inventory.width; ++x) {
       let isOccupied = false;
-      for (let y = 0; y <= inventory.height; ++y) {
+      for (let y = 0; y < inventory.height; ++y) {
         if (inventory.get(y + x * inventory.width) !== undefined) {
           isOccupied = true;
         }
@@ -181,7 +181,7 @@ class PositionalRecipe extends Recipe {
 
     for (x = inventory.width - 1; x >= 0; --x) {
       let isOccupied = false;
-      for (let y = 0; y <= inventory.height; ++y) {
+      for (let y = 0; y < inventory.height; ++y) {
         if (inventory.get(y + x * inventory.width) !== undefined) {
           isOccupied = true;
         }
@@ -192,9 +192,9 @@ class PositionalRecipe extends Recipe {
 
 
     let y;
-    for (y = 0; y <= inventory.height; ++y) {
+    for (y = 0; y < inventory.height; ++y) {
       let isOccupied = false;
-      for (let x = 0; x <= inventory.width; ++x) {
+      for (let x = 0; x < inventory.width; ++x) {
         if (inventory.get(y + x * inventory.width) !== undefined) {
           isOccupied = true;
         }
@@ -206,7 +206,7 @@ class PositionalRecipe extends Recipe {
 
     for (let y = inventory.height - 1; y >= 0; --y) {
       let isOccupied = false;
-      for (let x = 0; x <= inventory.width; ++x) {
+      for (let x = 0; x < inventory.width; ++x) {
         if (inventory.get(y + x * inventory.width) !== undefined) {
           isOccupied = true;
         }
