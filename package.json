@@ -1,7 +1,7 @@
 {
   "name": "craftingrecipes",
   "description": "recipes for crafting items with inventory and itempile",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": "craftingrecipes.js",
   "repository": {
     "type": "git",
